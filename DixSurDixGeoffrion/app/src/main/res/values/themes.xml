@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.DixSurDixGeoffrion" parent="Theme.MaterialComponents.DayNight">
+        <!-- Primary brand color. -->
+
+        <item name="android:statusBarColor">@color/hard_green</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+    </style>
+    <style name="ThemeOverlay.AppCompat.ActionBar" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textColorPrimary">@color/hard_green</item>
+        <item name="colorPrimary">@color/soft_green</item>
+    </style>
+    
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <style name="ThemeItemRecycleview">
+        <item name="android:background">@drawable/shape_item_background_rcyclvw_aliment</item>
+        <item name="android:elevation">20dp</item>
+    </style>
+</resources>

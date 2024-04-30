@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:background="@drawable/shape_dialog_ajout_aliment"
+    android:backgroundTint="#CDE9FF"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/txt_dialog_question_oui_non"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:text="Voulez-vous dire oui ou non?"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="15dp"
+        android:autoSizeMaxTextSize="20dp"
+        android:autoSizeStepGranularity="2sp"/>
+    <ImageView
+        android:id="@+id/imgvw_dialog_imageAliment"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/image_24"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button
+                android:id="@+id/btn_dialog_rep_non"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Non" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button
+                android:id="@+id/btn_dialog_rep_oui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oui" />
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
