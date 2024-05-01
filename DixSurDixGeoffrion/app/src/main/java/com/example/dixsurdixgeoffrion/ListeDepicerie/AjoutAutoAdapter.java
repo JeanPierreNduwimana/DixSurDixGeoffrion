@@ -1,7 +1,10 @@
 package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dixsurdixgeoffrion.Models.Aliment;
@@ -24,6 +29,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyViewHolder> {
 
@@ -36,7 +42,7 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
         public ImageView imgvw_ImageAliment;
         public TextView tv_NomAliment;
         public TextView tv_qtAliment;
-        public CheckBox chbx_selection_aliment;
+        public ImageView imgbtn_selection_aliment;
         public TextView btn_augmenterQtAliment;
         public TextView btn_diminuerQtAliment;
 
@@ -47,7 +53,7 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
             imgvw_ImageAliment = v.findViewById(R.id.imgvw_image_ajout_auto_aliment);
             tv_NomAliment = v.findViewById(R.id.txt_nom_ajout_auto_aliment);
             tv_qtAliment = v.findViewById(R.id.txt_ajtAutoAliment_Quantite);
-            chbx_selection_aliment = v.findViewById(R.id.chbx_selectionner_ajout_auto_aliment);
+            imgbtn_selection_aliment = v.findViewById(R.id.imgbtn_selectionner_ajout_auto_aliment);
             btn_augmenterQtAliment = v.findViewById(R.id.btn_ajtAutoAliment_augmenter);
             btn_diminuerQtAliment = v.findViewById(R.id.btn_ajtAutoAliment_diminuer);
         }
@@ -97,16 +103,18 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
             }
         });
 
-        viewHolder.chbx_selection_aliment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        viewHolder.imgbtn_selection_aliment.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                   // Toast.makeText(context,alimentcourant.Nom + " est coché", Toast.LENGTH_LONG).show();
-                    Log.i("CHECKED",alimentcourant.Nom + " est coché");
-                }
-                else {
-                   // Toast.makeText(context,alimentcourant.Nom + " est décoché", Toast.LENGTH_LONG).show();
-                    Log.i("CHECKED",alimentcourant.Nom + " est décoché");
+            public void onClick(View v) {
+                if(viewHolder.imgbtn_selection_aliment.getBackgroundTintList() == context.getResources().getColorStateList(R.color.white,null))
+                {
+                    viewHolder.imgbtn_selection_aliment.setBackgroundTintList(context.getResources().getColorStateList(R.color.blue,null));
+                    viewHolder.imgbtn_selection_aliment.setImageDrawable(context.getDrawable(R.drawable.add_24));
+                }else{
+                    viewHolder.imgbtn_selection_aliment.setBackgroundTintList(context.getResources().getColorStateList(R.color.white,null));
+                    viewHolder.imgbtn_selection_aliment.setImageDrawable(context.getDrawable(R.drawable.check_24_blue));
+
                 }
             }
         });

@@ -74,12 +74,21 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
-            <CheckBox
+           <!-- <CheckBox
                 android:id="@+id/chbx_selectionner_ajout_auto_aliment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5"/>-->
+
+            <ImageView
+                android:id="@+id/imgbtn_selectionner_ajout_auto_aliment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/add_24"
+                android:padding="6dp"
+                android:background="@drawable/shape_item_ajout_aliment"
+                android:backgroundTint="@color/blue"/>
         </LinearLayout>
 
 
