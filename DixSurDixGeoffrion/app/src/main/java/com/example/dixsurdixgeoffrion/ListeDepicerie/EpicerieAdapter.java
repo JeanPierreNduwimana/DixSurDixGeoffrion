@@ -70,6 +70,8 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
 
         viewHolder.tvNomAliment.setText(alimentcourant.Nom);
         viewHolder.tvQteAliment.setText(""+alimentcourant.Quantite);
+        viewHolder.imgvwImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
+
 
         Dialog dialogOuiNon = new Dialog(context);
         dialogOuiNon.setContentView(R.layout.dialog_yes_not);
@@ -117,7 +119,9 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 TextView tv_dialog_details_description= dialog_dtlsAliment.findViewById(R.id.txt_dtlsALiment_description);
                 Button btn_dialog_details_validate = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_validate);
                 Button btn_dialog_details_annulerAchat = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_annuler_achat);
+                ImageView imgvw_dialog_details_ImageDetailsAliment = dialog_dtlsAliment.findViewById(R.id.imgvw_dialog_imageDetailsAliment);
                 tv_dialog_details_description.setText(alimentcourant.Description);
+                imgvw_dialog_details_ImageDetailsAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
                if (alimentcourant.ValiderAchat){
                     //on change les boutons dans le dialog détails

@@ -8,7 +8,7 @@
     </style>
     <style name="ThemeOverlay.AppCompat.ActionBar" parent="Theme.MaterialComponents.DayNight">
         <item name="android:textColorPrimary">@color/hard_green</item>
-        <item name="colorPrimary">@color/soft_green</item>
+        <item name="colorPrimary">@color/white</item>
     </style>
     
     <style name="DialogAnimation">

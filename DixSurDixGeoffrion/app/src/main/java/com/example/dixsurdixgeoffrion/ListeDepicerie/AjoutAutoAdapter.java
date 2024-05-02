@@ -76,6 +76,7 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
 
         Aliment alimentcourant = listAliment.get(position);
         viewHolder.tv_NomAliment.setText(alimentcourant.Nom);
+        viewHolder.imgvw_ImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
         viewHolder.btn_augmenterQtAliment.setOnClickListener(new View.OnClickListener() {
             @Override

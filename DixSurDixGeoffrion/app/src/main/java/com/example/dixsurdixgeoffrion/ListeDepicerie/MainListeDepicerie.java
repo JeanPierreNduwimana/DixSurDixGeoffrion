@@ -20,19 +20,24 @@ import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
 import com.example.dixsurdixgeoffrion.databinding.MainListeDepicerieBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class MainListeDepicerie extends AppCompatActivity {
 
     MainListeDepicerieBinding binding;
     EpicerieAdapter epicerieAdapter;
     Boolean isExpanded = false;
+    List<Integer> listimages = new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = MainListeDepicerieBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setTitle("Liste d'épicerie");
-
         setContentView(view);
+        setListimages();
 
 
         binding.extfabAuto.setOnClickListener(new View.OnClickListener() {
@@ -88,11 +93,20 @@ public class MainListeDepicerie extends AppCompatActivity {
 
     }
 
+    private void setListimages()
+    {
+        listimages.add(R.drawable.banane);
+        listimages.add(R.drawable.patates);
+        listimages.add(R.drawable.pommes);
+        listimages.add(R.drawable.raisins);
+    }
+
     private void remplirRecycler() {
 
-        for(int i = 0; i < 40; i++){
 
-            epicerieAdapter.listAliment.add(new Aliment("Aliment" + i,"Ceci est la Description de l'alimaent duméro: " + i,"Key" + i,i,false));
+        for(int i = 0; i < 40; i++){
+            int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+            epicerieAdapter.listAliment.add(new Aliment("Aliment" + i,"Ceci est la Description de l'alimaent duméro: " + i,"Key" + i,i,false,listimages.get(randomNum)));
         }
     }
     private void initRecycler() {
@@ -124,8 +138,8 @@ public class MainListeDepicerie extends AppCompatActivity {
         ajoutAutoAdapter.context = dialog.getContext();
 
         for(int i = 0; i < 10; i++){
-
-            ajoutAutoAdapter.listAliment.add(new Aliment("Aliment " + i,"Ceci est l'aliment numero " + i, "key",0,false));
+            int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+            ajoutAutoAdapter.listAliment.add(new Aliment("Aliment " + i,"Ceci est l'aliment numero " + i, "key",0,false,listimages.get(randomNum)));
         }
 
         dialog.findViewById(R.id.extfab_ajouter_auto_aliment).setOnClickListener(new View.OnClickListener() {
