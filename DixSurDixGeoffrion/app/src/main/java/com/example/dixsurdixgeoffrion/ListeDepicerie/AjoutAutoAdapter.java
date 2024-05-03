@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,6 +121,19 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
             }
         });
 
+        viewHolder.imgvw_ImageAliment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialogAfficheImageAlimet = new Dialog(context);
+                dialogAfficheImageAlimet.setContentView(R.layout.dialog_show_image_full);
+                ImageView imagealiment = dialogAfficheImageAlimet.findViewById(R.id.imgvw_image_alimentfull);
+                imagealiment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
+                dialogAfficheImageAlimet.show();
+                dialogAfficheImageAlimet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialogAfficheImageAlimet.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialogAfficheImageAlimet.getWindow().setGravity(Gravity.CENTER);
+            }
+        });
 
 
     }

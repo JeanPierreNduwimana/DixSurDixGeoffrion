@@ -2,6 +2,7 @@ package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.Image;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
@@ -72,7 +73,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         viewHolder.tvQteAliment.setText(""+alimentcourant.Quantite);
         viewHolder.imgvwImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
-
+        //Creation du dialog oui non pour pas avoir à le repeter
         Dialog dialogOuiNon = new Dialog(context);
         dialogOuiNon.setContentView(R.layout.dialog_yes_not);
         TextView messageDialogOuiNon = dialogOuiNon.findViewById(R.id.txt_dialog_question_oui_non);
@@ -87,7 +88,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
 
         dialogOuiNon.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialogOuiNon.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        //dialogOuiNon.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialogOuiNon.getWindow().setGravity(Gravity.CENTER);
 
         viewHolder.imgbtnValiderAliment.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +109,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 dialogOuiNon.show();
             }
         });
-
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,6 +193,21 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 dialog_dtlsAliment.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 dialog_dtlsAliment.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                 dialog_dtlsAliment.getWindow().setGravity(Gravity.BOTTOM);
+            }
+        });
+
+        viewHolder.imgvwImageAliment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Dialog dialogAfficheImageAlimet = new Dialog(context);
+                dialogAfficheImageAlimet.setContentView(R.layout.dialog_show_image_full);
+                ImageView imagealiment = dialogAfficheImageAlimet.findViewById(R.id.imgvw_image_alimentfull);
+                imagealiment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
+                dialogAfficheImageAlimet.show();
+                dialogAfficheImageAlimet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialogAfficheImageAlimet.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialogAfficheImageAlimet.getWindow().setGravity(Gravity.CENTER);
             }
         });
     }
