@@ -93,8 +93,7 @@ public class MainListeDepicerie extends AppCompatActivity {
 
     }
 
-    private void setListimages()
-    {
+    private void setListimages() {
         listimages.add(R.drawable.banane);
         listimages.add(R.drawable.patates);
         listimages.add(R.drawable.pommes);
@@ -104,7 +103,8 @@ public class MainListeDepicerie extends AppCompatActivity {
     private void remplirRecycler() {
 
 
-        for(int i = 0; i < 40; i++){
+        epicerieAdapter.listAliment.add(null);
+        for(int i = 1; i < 40; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
             epicerieAdapter.listAliment.add(new Aliment("Aliment" + i,"Ceci est la Description de l'alimaent duméro: " + i,"Key" + i,i,false,listimages.get(randomNum)));
         }
