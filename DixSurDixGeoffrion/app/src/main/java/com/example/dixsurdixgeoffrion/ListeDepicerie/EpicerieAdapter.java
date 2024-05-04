@@ -3,6 +3,7 @@ package com.example.dixsurdixgeoffrion.ListeDepicerie;
 import android.app.Dialog;
 import android.content.Context;
 import android.media.Image;
+import android.os.Handler;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
@@ -38,6 +39,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         public ImageButton imgbtnValiderAliment;
         public LinearLayout  itemAliment;
         public LinearLayout itemPrincipal;
+        public TextView text;
 
 
         public MyViewHolder(LinearLayout v) {
@@ -50,6 +52,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             imgbtnValiderAliment = v.findViewById(R.id.imgbtn_valider_aliment);
             itemAliment =  v.findViewById(R.id.item_aliment);
             itemPrincipal = v.findViewById(R.id.item_principal);
+            text = v.findViewById(R.id.text);
         }
     }
 
@@ -70,11 +73,31 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
     public void onBindViewHolder(MyViewHolder viewHolder, final int position) {
 
         Aliment alimentcourant = listAliment.get(position);
-        if (alimentcourant == null)
+        if (viewHolder.getBindingAdapterPosition() == 0)
         {
+            viewHolder.itemView.setClickable(false);
             viewHolder.itemAliment.setVisibility(View.GONE);
             viewHolder.itemPrincipal.setVisibility(View.VISIBLE);
-        }else {
+
+            Handler handler = new Handler();
+            int delay = 5000; //one sec
+            handler.postDelayed(new Runnable(){
+                public void run(){
+                    //do process here
+                    handler.postDelayed(this, delay); // recall
+                    if(viewHolder.text.getText().equals("HAHAAHA"))
+                    {
+                        viewHolder.text.setText("Wow");
+                    }else{
+                        viewHolder.text.setText("HAHAAHA");
+                    }
+                }
+            }, delay);
+        }
+        else {
+            viewHolder.itemView.setClickable(true);
+            viewHolder.itemPrincipal.setVisibility(View.GONE);
+            viewHolder.itemAliment.setVisibility(View.VISIBLE);
             viewHolder.tvNomAliment.setText(alimentcourant.Nom);
             viewHolder.tvQteAliment.setText(""+alimentcourant.Quantite);
             viewHolder.imgvwImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
@@ -217,7 +240,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 }
             });
         }
-
     }
 
     @Override
