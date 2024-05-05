@@ -116,9 +116,9 @@ public class MainListeDepicerie extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         epicerieAdapter = new EpicerieAdapter();
-
         recyclerView.setAdapter(epicerieAdapter);
         epicerieAdapter.context = this;
+        epicerieAdapter.listimages = this.listimages;
     }
 
     private void showDialogAjoutAutoAliment() {
