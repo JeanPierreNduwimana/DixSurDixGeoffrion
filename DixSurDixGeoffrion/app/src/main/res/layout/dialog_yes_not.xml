@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="300dp"
     android:background="@drawable/shape_dialog_ajout_aliment"
-    android:backgroundTint="#CDE9FF"
+    android:backgroundTint="@color/white"
     android:padding="10dp">
 
     <TextView
@@ -44,6 +44,7 @@
                 android:id="@+id/btn_dialog_rep_non"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/yellow"
                 android:text="Non" />
         </LinearLayout>
         <LinearLayout
@@ -55,6 +56,7 @@
                 android:id="@+id/btn_dialog_rep_oui"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/hard_green"
                 android:text="Oui" />
         </LinearLayout>
 

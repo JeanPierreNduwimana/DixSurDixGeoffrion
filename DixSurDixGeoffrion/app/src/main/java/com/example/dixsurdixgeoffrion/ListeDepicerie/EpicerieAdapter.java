@@ -2,18 +2,16 @@ package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
-import android.text.Layout;
-import android.util.Log;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +25,10 @@ import java.util.List;
 public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyViewHolder> {
 
     public List<Aliment> listAliment;
+    public List<Integer> listimages = new ArrayList<>();
     public Context context;
+    private int index = 0;
+    private MyViewHolder itemprincipal;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -38,6 +39,8 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         public ImageButton imgbtnValiderAliment;
         public LinearLayout  itemAliment;
         public LinearLayout itemPrincipal;
+        public ImageView imgvwDiaporama;
+        public ProgressBar progressBar;
 
 
         public MyViewHolder(LinearLayout v) {
@@ -50,6 +53,8 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             imgbtnValiderAliment = v.findViewById(R.id.imgbtn_valider_aliment);
             itemAliment =  v.findViewById(R.id.item_aliment);
             itemPrincipal = v.findViewById(R.id.item_principal);
+            imgvwDiaporama = v.findViewById(R.id.imgvw_diaporama);
+            progressBar = v.findViewById(R.id.progressbar);
         }
     }
 
@@ -70,11 +75,37 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
     public void onBindViewHolder(MyViewHolder viewHolder, final int position) {
 
         Aliment alimentcourant = listAliment.get(position);
-        if (alimentcourant == null)
+        if (viewHolder.getBindingAdapterPosition() == 0)
         {
+            viewHolder.itemView.setClickable(false);
             viewHolder.itemAliment.setVisibility(View.GONE);
             viewHolder.itemPrincipal.setVisibility(View.VISIBLE);
-        }else {
+            viewHolder.progressBar.setProgress(getprogression());
+            itemprincipal = viewHolder;
+
+            Handler handler = new Handler();
+            int delay = 5000; //five sec
+            handler.postDelayed(new Runnable(){
+                public void run(){
+                    //do process here
+                    handler.postDelayed(this, delay); // recall
+
+                    if (index < listimages.size())
+                    {
+                        viewHolder.imgvwDiaporama.setImageDrawable(context.getDrawable(listimages.get(index)));
+                        index++;
+                    }else{
+                        index = 0;
+                        viewHolder.imgvwDiaporama.setImageDrawable(context.getDrawable(listimages.get(index)));
+                    }
+
+                }
+            }, delay);
+        }
+        else {
+            viewHolder.itemView.setClickable(true);
+            viewHolder.itemPrincipal.setVisibility(View.GONE);
+            viewHolder.itemAliment.setVisibility(View.VISIBLE);
             viewHolder.tvNomAliment.setText(alimentcourant.Nom);
             viewHolder.tvQteAliment.setText(""+alimentcourant.Quantite);
             viewHolder.imgvwImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
@@ -109,6 +140,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                             alimentcourant.ValiderAchat = true;
                             viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
                             viewHolder.itemView.setElevation(0);
+                            updateProgression();
                             dialogOuiNon.dismiss();
                         }
                     });
@@ -182,6 +214,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                                         viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
                                         viewHolder.itemView.setElevation(0);
                                         alimentcourant.ValiderAchat = true;
+                                        updateProgression();
                                         dialogOuiNon.dismiss();
                                         dialog_dtlsAliment.dismiss();
                                     }
@@ -217,11 +250,31 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 }
             });
         }
-
     }
 
     @Override
     public int getItemCount() {
         return listAliment.size();
+    }
+
+    private int getprogression(){
+        int nbdalimentValide = 0;
+
+        for (Aliment aliment : listAliment) {
+            if (aliment != null)
+            {
+                if (aliment.ValiderAchat){nbdalimentValide++;}
+            }
+        }
+        if(nbdalimentValide == 0){
+            return 0;}
+
+        int pourcentage = nbdalimentValide * 100 / listAliment.size();
+        return pourcentage;
+    }
+
+    private void updateProgression()
+    {
+        itemprincipal.progressBar.setProgress(getprogression());
     }
 }

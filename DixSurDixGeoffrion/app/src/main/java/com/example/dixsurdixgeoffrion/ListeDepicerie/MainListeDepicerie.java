@@ -101,8 +101,6 @@ public class MainListeDepicerie extends AppCompatActivity {
     }
 
     private void remplirRecycler() {
-
-
         epicerieAdapter.listAliment.add(null);
         for(int i = 1; i < 40; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
@@ -118,9 +116,9 @@ public class MainListeDepicerie extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         epicerieAdapter = new EpicerieAdapter();
-
         recyclerView.setAdapter(epicerieAdapter);
         epicerieAdapter.context = this;
+        epicerieAdapter.listimages = this.listimages;
     }
 
     private void showDialogAjoutAutoAliment() {
