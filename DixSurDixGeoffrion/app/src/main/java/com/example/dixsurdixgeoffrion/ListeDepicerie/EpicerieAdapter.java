@@ -106,9 +106,9 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.itemView.setClickable(true);
             viewHolder.itemPrincipal.setVisibility(View.GONE);
             viewHolder.itemAliment.setVisibility(View.VISIBLE);
-            viewHolder.tvNomAliment.setText(alimentcourant.Nom);
-            viewHolder.tvQteAliment.setText(""+alimentcourant.Quantite);
-            viewHolder.imgvwImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
+            viewHolder.tvNomAliment.setText(alimentcourant.nom);
+            viewHolder.tvQteAliment.setText(""+alimentcourant.quantite);
+            //viewHolder.imgvwImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
             //Creation du dialog oui non pour pas avoir à le repeter
             Dialog dialogOuiNon = new Dialog(context);
@@ -131,13 +131,13 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 @Override
                 public void onClick(View view) {
 
-                    messageDialogOuiNon.setText("Valider l'achat de cette aliment? \n \n"  + alimentcourant.Nom);
+                    messageDialogOuiNon.setText("Valider l'achat de cette aliment? \n \n"  + alimentcourant.nom);
                     btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             viewHolder.imgbtnValiderAliment.setVisibility(View.GONE);
                             viewHolder.tvMessageAchete.setVisibility(View.VISIBLE);
-                            alimentcourant.ValiderAchat = true;
+                            alimentcourant.validerAchat = true;
                             viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
                             viewHolder.itemView.setElevation(0);
                             updateProgression();
@@ -157,10 +157,10 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                     Button btn_dialog_details_validate = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_validate);
                     Button btn_dialog_details_annulerAchat = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_annuler_achat);
                     ImageView imgvw_dialog_details_ImageDetailsAliment = dialog_dtlsAliment.findViewById(R.id.imgvw_dialog_imageDetailsAliment);
-                    tv_dialog_details_description.setText(alimentcourant.Description);
-                    imgvw_dialog_details_ImageDetailsAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
+                    tv_dialog_details_description.setText(alimentcourant.description);
+                    //imgvw_dialog_details_ImageDetailsAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
-                    if (alimentcourant.ValiderAchat){
+                    if (alimentcourant.validerAchat){
                         //on change les boutons dans le dialog détails
                         btn_dialog_details_validate.setVisibility(View.GONE);
                         btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
@@ -169,7 +169,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                             @Override
                             public void onClick(View view) {
 
-                                messageDialogOuiNon.setText("Annuler cette aliment? \n \n"  + alimentcourant.Nom);
+                                messageDialogOuiNon.setText("Annuler cette aliment? \n \n"  + alimentcourant.nom);
                                 btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -184,7 +184,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                                         viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_item_background_rcyclvw_aliment));
                                         viewHolder.itemView.setElevation(5);
                                         //on change l'etat achat
-                                        alimentcourant.ValiderAchat = false;
+                                        alimentcourant.validerAchat = false;
                                         dialogOuiNon.dismiss();
                                         dialog_dtlsAliment.dismiss();
                                     }
@@ -201,7 +201,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                             public void onClick(View view) {
                                 //si on valide l'achat à partir du dialog_dtlsAliment
                                 //on affiche le message dans le diagOUiNon
-                                messageDialogOuiNon.setText("Valider l'achat de cette aliment? \n \n"  + alimentcourant.Nom);
+                                messageDialogOuiNon.setText("Valider l'achat de cette aliment? \n \n"  + alimentcourant.nom);
                                 //on change les boutons du dialog_dtlsAliment
                                 btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -213,7 +213,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                                         viewHolder.tvMessageAchete.setVisibility(View.VISIBLE);
                                         viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
                                         viewHolder.itemView.setElevation(0);
-                                        alimentcourant.ValiderAchat = true;
+                                        alimentcourant.validerAchat = true;
                                         updateProgression();
                                         dialogOuiNon.dismiss();
                                         dialog_dtlsAliment.dismiss();
@@ -242,7 +242,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                     Dialog dialogAfficheImageAlimet = new Dialog(context);
                     dialogAfficheImageAlimet.setContentView(R.layout.dialog_show_image_full);
                     ImageView imagealiment = dialogAfficheImageAlimet.findViewById(R.id.imgvw_image_alimentfull);
-                    imagealiment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
+                    //imagealiment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
                     dialogAfficheImageAlimet.show();
                     dialogAfficheImageAlimet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     dialogAfficheImageAlimet.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -263,7 +263,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         for (Aliment aliment : listAliment) {
             if (aliment != null)
             {
-                if (aliment.ValiderAchat){nbdalimentValide++;}
+                if (aliment.validerAchat){nbdalimentValide++;}
             }
         }
         if(nbdalimentValide == 0){

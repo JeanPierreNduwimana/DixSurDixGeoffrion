@@ -2,21 +2,48 @@ package com.example.dixsurdixgeoffrion.Models;
 
 public class Aliment {
 
-    public String Nom;
-    public String Description;
-    public String UserOwnerKey;
-    public int Quantite;
-    public Boolean ValiderAchat;
-    public int Photo;
+    public String alimentKey;
+    public String nom;
+    public String description;
+    public int quantite;
+    public Boolean validerAchat;
+    public String imageUri;
 
-    public Aliment(String Nom, String Description, String UserOwnerKey, int Quantite,Boolean ValiderAchat, int photo){
+    public Aliment(String Nom, String Description, int Quantite,Boolean ValiderAchat, String imageUri){
 
-        this.Nom = Nom;
-        this.Description = Description;
-        this.UserOwnerKey = UserOwnerKey;
-        this.Quantite = Quantite;
-        this.ValiderAchat = ValiderAchat;
-        this.Photo = photo;
+        this.nom = Nom;
+        this.description = Description;
+        this.quantite = Quantite;
+        this.validerAchat = ValiderAchat;
+        this.imageUri = imageUri;
 
     }
+
+    public Aliment(){}
+    public String getAlimentKey() {
+        return alimentKey;
+    }
+    public String getNom() {
+        return nom;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public int getQuantite() {
+        return quantite;
+    }
+    public Boolean getValiderAchat() {
+        return validerAchat;
+    }
+    public String getImageUri() {
+        return imageUri;
+    }
+
+
+
+
+
+
+
+
 }

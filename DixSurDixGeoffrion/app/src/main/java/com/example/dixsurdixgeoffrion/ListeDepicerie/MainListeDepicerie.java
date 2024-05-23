@@ -1,28 +1,27 @@
 package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
-import android.app.Dialog;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
-import android.widget.Toolbar;
+import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
+import com.example.dixsurdixgeoffrion.Services.DialogService;
+import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
 import com.example.dixsurdixgeoffrion.databinding.MainListeDepicerieBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class MainListeDepicerie extends AppCompatActivity {
 
@@ -30,6 +29,21 @@ public class MainListeDepicerie extends AppCompatActivity {
     EpicerieAdapter epicerieAdapter;
     Boolean isExpanded = false;
     List<Integer> listimages = new ArrayList<>();
+    DialogService dialogService;
+    ServiceEpicerie _serviceEpicerie;
+    ImageView imageView;
+
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    if (uri != null){
+                        imageView.setImageURI(uri);
+                        dialogService.imageUri = uri;
+                    }
+                }
+            });
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,41 +52,37 @@ public class MainListeDepicerie extends AppCompatActivity {
         setTitle("Liste d'épicerie");
         setContentView(view);
         setListimages();
+        _serviceEpicerie = new ServiceEpicerie(MainListeDepicerie.this);
+        dialogService = new DialogService(MainListeDepicerie.this,_serviceEpicerie);
 
 
         binding.extfabAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogAjoutAutoAliment();
+                dialogService.showDialogAjoutAutoAliment();
                 shrinkFab();
-               // Toast.makeText(MainListeDepicerie.this,"btn extented auto clicked", Toast.LENGTH_SHORT).show();
-
             }
         });
         binding.extfabManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogAjoutAliment();
+                dialogService.showDialogAjoutAliment();
                 shrinkFab();
-
             }
         });
         binding.fabAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                showDialogAjoutAutoAliment();
+                dialogService.showDialogAjoutAutoAliment();
                 shrinkFab();
-                //Toast.makeText(MainListeDepicerie.this,"btn auto clicked", Toast.LENGTH_SHORT).show();
-
             }
         });
         binding.fabManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogAjoutAliment();
+                dialogService.showDialogAjoutAliment();
                 shrinkFab();
-                //Toast.makeText(MainListeDepicerie.this,"btn manual clicked", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -93,6 +103,11 @@ public class MainListeDepicerie extends AppCompatActivity {
 
     }
 
+    public void UploadImageAliment(ImageView imageView){
+        mGetContent.launch("image/*");
+        this.imageView = imageView;
+    }
+
     private void setListimages() {
         listimages.add(R.drawable.banane);
         listimages.add(R.drawable.patates);
@@ -102,10 +117,12 @@ public class MainListeDepicerie extends AppCompatActivity {
 
     private void remplirRecycler() {
         epicerieAdapter.listAliment.add(null);
-        for(int i = 1; i < 40; i++){
+
+
+        /*for(int i = 1; i < 40; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
             epicerieAdapter.listAliment.add(new Aliment("Aliment" + i,"Ceci est la Description de l'alimaent duméro: " + i,"Key" + i,i,false,listimages.get(randomNum)));
-        }
+        }*/
     }
     private void initRecycler() {
 
@@ -120,108 +137,7 @@ public class MainListeDepicerie extends AppCompatActivity {
         epicerieAdapter.context = this;
         epicerieAdapter.listimages = this.listimages;
     }
-
-    private void showDialogAjoutAutoAliment() {
-
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.ajout_auto_aliment);
-
-        RecyclerView recyclerView = dialog.findViewById(R.id.recycle_ajout_auto_aliment);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(dialog.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        AjoutAutoAdapter ajoutAutoAdapter = new AjoutAutoAdapter();
-        recyclerView.setAdapter(ajoutAutoAdapter);
-        ajoutAutoAdapter.context = dialog.getContext();
-
-        for(int i = 0; i < 10; i++){
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
-            ajoutAutoAdapter.listAliment.add(new Aliment("Aliment " + i,"Ceci est l'aliment numero " + i, "key",0,false,listimages.get(randomNum)));
-        }
-
-        dialog.findViewById(R.id.extfab_ajouter_auto_aliment).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.findViewById(R.id.btn_ajtAutoAliment_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-    }
-    private void showDialogAjoutAliment() {
-
-        Dialog dialog = new Dialog(this);
-
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.ajout_aliment);
-
-        TextView btn_cancel = dialog.findViewById(R.id.btn_ajtAutoAliment_cancel);
-        TextView btn_validate = dialog.findViewById(R.id.btn_ajtAliment_validate);
-        TextView tv_quantite = dialog.findViewById(R.id.txt_ajtAliment_Quantite);
-        TextView btn_diminuer = dialog.findViewById(R.id.btn_ajtAliment_diminuer);
-        TextView btn_augmenter = dialog.findViewById(R.id.btn_ajtAliment_augmenter);
-
-        btn_augmenter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int quantite = Integer.valueOf(tv_quantite.getText().toString());
-
-                if (quantite < 20){
-                    quantite = quantite + 1;
-                    tv_quantite.setText(""+quantite);
-
-                }
-            }
-        });
-
-        btn_diminuer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                int quantite = Integer.valueOf(tv_quantite.getText().toString());
-
-                if (quantite > 0){
-                    quantite = quantite - 1;
-                    tv_quantite.setText(""+quantite);
-                }
-            }
-        });
-
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            dialog.dismiss();
-            }
-        });
-
-        btn_validate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-
-    }
     public void shrinkFab() {
-
-
         binding.fabAdd.startAnimation(rotateAntiClockWiseFabAnim());
         //binding.fabAdd.setBackgroundTintList(this.getResources().getColorStateList(R.color.purple_200, null));
         binding.lytFabAuto.startAnimation(toBottomFabAnim());
