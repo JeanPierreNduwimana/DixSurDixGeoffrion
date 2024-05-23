@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +109,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.itemAliment.setVisibility(View.VISIBLE);
             viewHolder.tvNomAliment.setText(alimentcourant.nom);
             viewHolder.tvQteAliment.setText(""+alimentcourant.quantite);
+            Picasso.get().load(alimentcourant.imageUri).into(viewHolder.imgvwImageAliment);
             //viewHolder.imgvwImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
             //Creation du dialog oui non pour pas avoir à le repeter

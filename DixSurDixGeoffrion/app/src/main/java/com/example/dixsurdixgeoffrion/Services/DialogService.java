@@ -96,6 +96,7 @@ public class DialogService{
         TextView btn_augmenter = dialog.findViewById(R.id.btn_ajtAliment_augmenter);
         ImageView imgvwImageAliment = dialog.findViewById(R.id.image_aliment_ajout);
 
+        //ImageView clickable pour upload l'image pour un nouvel aliment
         imgvwImageAliment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +138,7 @@ public class DialogService{
             }
         });
 
+        //Le bouton qui envoi le formulaire d'ajout d'un aliment
         btn_validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,6 +148,7 @@ public class DialogService{
                 int quantite = Integer.valueOf(tv_quantite.getText().toString());
                 Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString());
 
+                //Execution de la méthode du service
                 _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri);
                 dialog.dismiss();
             }

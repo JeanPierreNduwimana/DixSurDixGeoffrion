@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
 import com.example.dixsurdixgeoffrion.Services.DialogService;
 import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
@@ -99,7 +100,7 @@ public class MainListeDepicerie extends AppCompatActivity {
         });
 
         initRecycler();
-        remplirRecycler();
+        //remplirRecycler();
 
     }
 
@@ -115,9 +116,17 @@ public class MainListeDepicerie extends AppCompatActivity {
         listimages.add(R.drawable.raisins);
     }
 
-    private void remplirRecycler() {
+    public void remplirRecycler(List<Aliment> listaliment) {
+        epicerieAdapter.listAliment.clear();
         epicerieAdapter.listAliment.add(null);
 
+       //List<Aliment> listaliment;
+
+        for (Aliment aliment : listaliment) {
+            epicerieAdapter.listAliment.add(aliment);
+        }
+
+        epicerieAdapter.notifyDataSetChanged();
 
         /*for(int i = 1; i < 40; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
@@ -136,6 +145,7 @@ public class MainListeDepicerie extends AppCompatActivity {
         recyclerView.setAdapter(epicerieAdapter);
         epicerieAdapter.context = this;
         epicerieAdapter.listimages = this.listimages;
+        _serviceEpicerie.GetListAliment();
     }
     public void shrinkFab() {
         binding.fabAdd.startAnimation(rotateAntiClockWiseFabAnim());
@@ -147,6 +157,11 @@ public class MainListeDepicerie extends AppCompatActivity {
         binding.extfabManual.setEnabled(false);
         binding.extfabAuto.setEnabled(false);
 
+        binding.fabManual.setClickable(false);
+        binding.fabAuto.setClickable(false);
+        binding.extfabManual.setClickable(false);
+        binding.extfabAuto.setClickable(false);
+
         isExpanded = !isExpanded;
     }
     public void expandFab() {
@@ -155,6 +170,11 @@ public class MainListeDepicerie extends AppCompatActivity {
         binding.fabAuto.setEnabled(true);
         binding.extfabManual.setEnabled(true);
         binding.extfabAuto.setEnabled(true);
+
+        binding.fabManual.setClickable(true);
+        binding.fabAuto.setClickable(true);
+        binding.extfabManual.setClickable(true);
+        binding.extfabAuto.setClickable(true);
 
         binding.fabAdd.startAnimation(rotateClockWiseFabAnim());
         //binding.fabAdd.setBackgroundTintList(this.getResources().getColorStateList(R.color.purple_200, null));

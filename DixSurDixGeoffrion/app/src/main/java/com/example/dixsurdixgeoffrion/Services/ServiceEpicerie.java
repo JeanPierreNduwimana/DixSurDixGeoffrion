@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.dixsurdixgeoffrion.ListeDepicerie.MainListeDepicerie;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,16 +26,16 @@ public class ServiceEpicerie {
     private List<Aliment> alimentList;
     private DatabaseReference _rootDataref;
     private StorageReference rootStorage;
-    private Context context;
+    private MainListeDepicerie context;
 
 
-    public ServiceEpicerie(Context current_context){
+    public ServiceEpicerie(MainListeDepicerie current_context){
         _rootDataref = FirebaseDatabase.getInstance().getReference().child("1010GeoffrionApp");
         rootStorage = FirebaseStorage.getInstance().getReference().child("AlimentImages");
         context = current_context;
     }
 
-    public List<Aliment> GetListAliment(){
+    public void GetListAliment(){
 
         _rootDataref.child("Aliments").addValueEventListener(new ValueEventListener() {
             @Override
@@ -45,15 +46,17 @@ public class ServiceEpicerie {
                     for (DataSnapshot s : list){
                         alimentList.add(s.getValue(Aliment.class));
                     }
+
+                    context.remplirRecycler(alimentList);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(context,"Problème inattendue",Toast.LENGTH_LONG).show();
             }
         });
-        return alimentList;
+       // return alimentList;
     }
 
     public void AjouterAliment(Aliment aliment, Uri imageUri){
@@ -77,9 +80,11 @@ public class ServiceEpicerie {
                         aliment.imageUri = uri.toString();
 
                         //Création de l'aliment
-                        _rootDataref.child(key).setValue(aliment).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        _rootDataref.child("Aliments").child(key).setValue(aliment).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
+                                //Chargement de la liste d'aliment avec pour avoir le nouvel aliment
+                                GetListAliment();
                                 Toast.makeText(context,"Data added successfully!", Toast.LENGTH_SHORT).show();
                             }
                         })
