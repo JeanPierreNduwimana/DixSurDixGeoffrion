@@ -59,11 +59,13 @@
         android:padding="10dp">
 
         <EditText
+            android:id="@+id/input_nom_aliment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nom de l'aliment"
             android:maxLength="30"/>
         <EditText
+            android:id="@+id/input_descrip_aliment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
@@ -71,6 +73,13 @@
             android:paddingLeft="4dp"
             android:maxLength="120"
             android:maxHeight="100dp"/>
+
+        <ImageView
+            android:id="@+id/image_aliment_ajout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/image_24"
+            android:layout_gravity="center"/>
 
 
 

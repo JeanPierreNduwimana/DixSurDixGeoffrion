@@ -3,40 +3,29 @@ package com.example.dixsurdixgeoffrion.ListeDepicerie;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
-
-import org.w3c.dom.Text;
+import com.example.dixsurdixgeoffrion.Services.DialogService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyViewHolder> {
 
     public List<Aliment> listAliment;
     public Context context;
     public List<Aliment> listAlimentSelected;
+    public DialogService dialogService;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -76,8 +65,8 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
     public void onBindViewHolder(AjoutAutoAdapter.MyViewHolder viewHolder, final int position) {
 
         Aliment alimentcourant = listAliment.get(position);
-        viewHolder.tv_NomAliment.setText(alimentcourant.Nom);
-        viewHolder.imgvw_ImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
+        viewHolder.tv_NomAliment.setText(alimentcourant.nom);
+       // viewHolder.imgvw_ImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
         viewHolder.btn_augmenterQtAliment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,14 +113,7 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
         viewHolder.imgvw_ImageAliment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog dialogAfficheImageAlimet = new Dialog(context);
-                dialogAfficheImageAlimet.setContentView(R.layout.dialog_show_image_full);
-                ImageView imagealiment = dialogAfficheImageAlimet.findViewById(R.id.imgvw_image_alimentfull);
-                imagealiment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
-                dialogAfficheImageAlimet.show();
-                dialogAfficheImageAlimet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialogAfficheImageAlimet.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                dialogAfficheImageAlimet.getWindow().setGravity(Gravity.CENTER);
+                dialogService.showDialogFullImage();
             }
         });
 
