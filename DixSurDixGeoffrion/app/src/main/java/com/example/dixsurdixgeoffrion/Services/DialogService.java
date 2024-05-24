@@ -55,7 +55,10 @@ public class DialogService{
         recyclerView.setAdapter(ajoutAutoAdapter);
         ajoutAutoAdapter.context = dialog.getContext();
         ajoutAutoAdapter.dialogService = this;
+
+        _serviceEpicerie.GetListAutoAliment(ajoutAutoAdapter);
 /*
+
         for(int i = 0; i < 10; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
             ajoutAutoAdapter.listAliment.add(new Aliment("Aliment " + i,"Ceci est l'aliment numero " + i, "key",0,false,listimages.get(randomNum)));

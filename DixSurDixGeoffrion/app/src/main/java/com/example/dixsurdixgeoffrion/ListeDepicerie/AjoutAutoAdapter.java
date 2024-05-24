@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
 import com.example.dixsurdixgeoffrion.Services.DialogService;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
 
         Aliment alimentcourant = listAliment.get(position);
         viewHolder.tv_NomAliment.setText(alimentcourant.nom);
+        Picasso.get().load(alimentcourant.imageUri).into(viewHolder.imgvw_ImageAliment);
        // viewHolder.imgvw_ImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
         viewHolder.btn_augmenterQtAliment.setOnClickListener(new View.OnClickListener() {

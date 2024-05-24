@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.dixsurdixgeoffrion.ListeDepicerie.AjoutAutoAdapter;
 import com.example.dixsurdixgeoffrion.ListeDepicerie.MainListeDepicerie;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -57,6 +58,28 @@ public class ServiceEpicerie {
             }
         });
        // return alimentList;
+    }
+
+    public void GetListAutoAliment(AjoutAutoAdapter ajoutAutoAdapter) {
+        _rootDataref.child("Aliments Automatiques").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    Iterable<DataSnapshot> list = snapshot.getChildren();
+                   // alimentList = new ArrayList<>();
+                    for (DataSnapshot s : list){
+                        ajoutAutoAdapter.listAliment.add(s.getValue(Aliment.class));
+                    }
+
+                    ajoutAutoAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context,"Problème inattendue",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void AjouterAliment(Aliment aliment, Uri imageUri){

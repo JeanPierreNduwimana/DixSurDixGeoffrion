@@ -25,14 +25,20 @@
                 android:layout_height="70dp"
                 android:src="@drawable/image_24"
                 android:scaleType="centerCrop"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="15dp"
                 />
 
             <TextView
                 android:id="@+id/txt_nom_ajout_auto_aliment"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="Nom Aliment"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="12dp"
+                android:maxLines="1"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
