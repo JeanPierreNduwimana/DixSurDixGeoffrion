@@ -110,7 +110,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.tvNomAliment.setText(alimentcourant.nom);
             viewHolder.tvQteAliment.setText(""+alimentcourant.quantite);
             Picasso.get().load(alimentcourant.imageUri).into(viewHolder.imgvwImageAliment);
-            //viewHolder.imgvwImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
             //Creation du dialog oui non pour pas avoir à le repeter
             Dialog dialogOuiNon = new Dialog(context);

@@ -68,7 +68,7 @@
 </LinearLayout>
 
 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    android:id="@+id/extfab_ajouter_auto_aliment"
+    android:id="@+id/extfab_validate_auto_aliment"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center|bottom"

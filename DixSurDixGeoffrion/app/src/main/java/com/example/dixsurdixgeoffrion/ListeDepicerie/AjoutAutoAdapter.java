@@ -7,6 +7,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
 import com.example.dixsurdixgeoffrion.Services.DialogService;
+import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,7 +30,6 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
 
     public List<Aliment> listAliment;
     public Context context;
-    public List<Aliment> listAlimentSelected;
     public DialogService dialogService;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -68,7 +72,6 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
         Aliment alimentcourant = listAliment.get(position);
         viewHolder.tv_NomAliment.setText(alimentcourant.nom);
         Picasso.get().load(alimentcourant.imageUri).into(viewHolder.imgvw_ImageAliment);
-       // viewHolder.imgvw_ImageAliment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
 
         viewHolder.btn_augmenterQtAliment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,10 +107,13 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
                 {
                     viewHolder.imgbtn_selection_aliment.setBackgroundTintList(context.getResources().getColorStateList(R.color.blue,null));
                     viewHolder.imgbtn_selection_aliment.setImageDrawable(context.getDrawable(R.drawable.add_24));
+                    alimentcourant.quantite = Integer.parseInt(viewHolder.tv_qtAliment.getText().toString());
+                    dialogService.AjoutPositionAlimentAuto(alimentcourant);
                 }else{
                     viewHolder.imgbtn_selection_aliment.setBackgroundTintList(context.getResources().getColorStateList(R.color.white,null));
                     viewHolder.imgbtn_selection_aliment.setImageDrawable(context.getDrawable(R.drawable.check_24_blue));
-
+                    alimentcourant.quantite = Integer.parseInt(viewHolder.tv_qtAliment.getText().toString());
+                    dialogService.AjoutPositionAlimentAuto(alimentcourant);
                 }
             }
         });

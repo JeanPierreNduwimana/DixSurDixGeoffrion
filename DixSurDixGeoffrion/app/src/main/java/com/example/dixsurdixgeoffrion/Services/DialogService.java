@@ -20,18 +20,19 @@ import com.example.dixsurdixgeoffrion.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class DialogService{
     public MainListeDepicerie context;
     ServiceEpicerie _serviceEpicerie;
     List<Integer> listimages;
+    List<Aliment> listPosAlimentsAuto; //Recoit tout les positions des aliments automatiques à ajouter dans la bd.
     public Uri imageUri;
 
     public DialogService(MainListeDepicerie current_activity, ServiceEpicerie serviceEpicerie){
         context = current_activity;
         _serviceEpicerie = serviceEpicerie;
         listimages = new ArrayList<>();
+        listPosAlimentsAuto = new ArrayList<>();
         setListimages();
     }
 
@@ -41,6 +42,17 @@ public class DialogService{
         listimages.add(R.drawable.pommes);
         listimages.add(R.drawable.raisins);
     }
+
+    //Ajoute ou enleve la position de l'aliment à ajouter dans la bd
+    public void AjoutPositionAlimentAuto(Aliment aliment){
+
+        if (listPosAlimentsAuto.contains(aliment)){
+            listPosAlimentsAuto.remove(aliment);
+        }else {
+            listPosAlimentsAuto.add(aliment);
+        }
+    }
+
     public void showDialogAjoutAutoAliment() {
 
         Dialog dialog = new Dialog(context);
@@ -57,17 +69,19 @@ public class DialogService{
         ajoutAutoAdapter.dialogService = this;
 
         _serviceEpicerie.GetListAutoAliment(ajoutAutoAdapter);
-/*
 
-        for(int i = 0; i < 10; i++){
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
-            ajoutAutoAdapter.listAliment.add(new Aliment("Aliment " + i,"Ceci est l'aliment numero " + i, "key",0,false,listimages.get(randomNum)));
-        } */
-
-        dialog.findViewById(R.id.extfab_ajouter_auto_aliment).setOnClickListener(new View.OnClickListener() {
+        dialog.findViewById(R.id.extfab_validate_auto_aliment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+
+                if (listPosAlimentsAuto != null && listPosAlimentsAuto.size() > 0){
+                    _serviceEpicerie.alimentListAuto = listPosAlimentsAuto;
+                   // _serviceEpicerie.AjouterAliment(listPosAlimentsAuto.get(0),Uri.parse(listPosAlimentsAuto.get(0).imageUri),true);
+
+                    _serviceEpicerie.AjouterAutoAliment(0);
+                }
+
+               // dialog.dismiss();
             }
         });
         dialog.findViewById(R.id.btn_ajtAutoAliment_cancel).setOnClickListener(new View.OnClickListener() {
@@ -152,7 +166,7 @@ public class DialogService{
                 Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString());
 
                 //Execution de la méthode du service
-                _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri);
+                _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri,false);
                 dialog.dismiss();
             }
         });
