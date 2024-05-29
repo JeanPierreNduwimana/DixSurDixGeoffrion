@@ -23,11 +23,14 @@ import com.example.dixsurdixgeoffrion.Models.AlimentAuto;
 import com.example.dixsurdixgeoffrion.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DialogService{
     public MainListeDepicerie context;
@@ -238,9 +241,13 @@ public class DialogService{
         Button btn_dialog_details_validate = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_validate);
         Button btn_dialog_details_annulerAchat = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_annuler_achat);
         TextView btn_dialog_details_delete = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAlimenent_delete);
+        TextView tv_dateAjoutAliment = dialog_dtlsAliment.findViewById(R.id.date_AjoutAliment);
         ImageView imgvwDetailsAliment = dialog_dtlsAliment.findViewById(R.id.imgvw_dialog_imageDetailsAliment);
 
         tv_dialog_details_description.setText(aliment.description);
+        String pattern = "EEEE dd MMMM yyyy HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, new Locale("fr", "FR"));
+        tv_dateAjoutAliment.setText(dateFormat.format(aliment.dateAjout).toString());
         Picasso.get().load(aliment.imageUri).into(imgvwDetailsAliment);
 
         btn_dialog_details_delete.setOnClickListener(new View.OnClickListener() {

@@ -22,11 +22,17 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="match_parent">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycle_liste_epicerie"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swiperefresh"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="11"/>
+                    android:layout_weight="11">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_liste_epicerie"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"

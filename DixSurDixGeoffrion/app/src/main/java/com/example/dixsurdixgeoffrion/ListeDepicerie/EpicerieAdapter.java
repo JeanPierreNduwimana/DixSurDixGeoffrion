@@ -87,14 +87,9 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             if ((listAliment.size() -1) > 0){
                 viewHolder.progressBar.setVisibility(View.VISIBLE);
                 viewHolder.progressBar.setProgress(getprogression());
-
-            }else{
-                viewHolder.progressBar.setVisibility(View.GONE);
-            }
-
+            }else{ viewHolder.progressBar.setVisibility(View.GONE);}
 
             itemprincipal = viewHolder;
-
             Handler handler = new Handler();
             int delay = 5000; //five sec
             handler.postDelayed(new Runnable(){

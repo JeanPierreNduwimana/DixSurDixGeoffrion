@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
@@ -58,6 +59,13 @@ public class MainListeDepicerie extends AppCompatActivity {
         dialogService = new DialogService(MainListeDepicerie.this,_serviceEpicerie);
 
         //region BINDINGS
+
+        binding.swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                _serviceEpicerie.GetListAliment();
+            }
+        });
 
         binding.extfabAuto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,9 +125,9 @@ public class MainListeDepicerie extends AppCompatActivity {
         listaliment.sort(Comparator.comparing(Aliment::getDateAjout)); //liste d'aliments en ordre par date
         epicerieAdapter.listAliment.addAll(listaliment); //Ajout au recycleview
         epicerieAdapter.notifyDataSetChanged();
+        binding.swiperefresh.setRefreshing(false);
     }
     private void initRecycler() {
-
         RecyclerView recyclerView = findViewById(R.id.recycle_liste_epicerie);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
