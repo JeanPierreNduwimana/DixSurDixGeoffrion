@@ -37,8 +37,7 @@ public class ServiceEpicerie {
         context = current_context;
     }
 
-    //Ceci est l'étape 1 du chargement de la liste. La requête charge les aliments ajouté manuelement.
-    public void GetListAlimentManuel(){
+    public void GetListAliment(){
 
         _rootDataref.child("AlimentsEpicerie").addValueEventListener(new ValueEventListener() {
             @Override
@@ -51,48 +50,8 @@ public class ServiceEpicerie {
                     }
                 }
 
-                _rootDataref.child("AlimentsAutoEpicerie").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        if (snapshot.exists()){
-                            //Si la liste d'aliments automatiques est rempli :
-                            GetListAlimentAuto();
-                        }else{
-                            context.remplirRecycler(alimentList);
-                            alimentList.clear();// Une fois la liste envoyé dans le recycleview, on la vide pour les prochaine requetes..
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(context,"Problème inattendue",Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context,"Problème inattendue",Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    //Ceci est l'étape 2 du chargement de la liste. La requête charge les aliments ajouté automatiquement, puis lance le recycleview.
-    private void GetListAlimentAuto() {
-        _rootDataref.child("AlimentsAutoEpicerie").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    Iterable<DataSnapshot> list = snapshot.getChildren();
-
-                    for (DataSnapshot s : list){
-                        alimentList.add(s.getValue(Aliment.class));
-                    }
-                }
                 context.remplirRecycler(alimentList);
-                alimentList.clear();// Une fois la liste envoyé dans le recycleview, on la vide pour les prochaine requetes..
+                alimentList.clear();
             }
 
             @Override
@@ -123,10 +82,9 @@ public class ServiceEpicerie {
         });
     }
 
-    //Le booléen fait savoir au méthode, si c'est un aliment auto qui va se faire ajouter.
-    public void AjouterAliment(Aliment aliment, Uri imageUri, boolean AjoutAlimentAuto){
+    public void AjouterAliment(Aliment aliment, Uri imageUri){
 
-        rootStorage = FirebaseStorage.getInstance().getReference().child("AlimentImages");
+       // rootStorage = FirebaseStorage.getInstance().getReference().child("AlimentImages");
 
         //Création de la clé qui sera la même pour l'image et l'aliment
         String key = _rootDataref.push().getKey();
@@ -151,7 +109,7 @@ public class ServiceEpicerie {
                             @Override
                             public void onSuccess(Void unused) {
                                 //Chargement de la liste d'aliment pour avoir le nouvel aliment
-                                GetListAlimentManuel();
+                                GetListAliment();
                                 Toast.makeText(context,"Data added successfully!", Toast.LENGTH_SHORT).show();
 
                             }
@@ -176,20 +134,19 @@ public class ServiceEpicerie {
         }); //addonprogresslistener possible.
     }
 
-    //Le parametre de position permet de signaler à cette méthode à quel position on est rendu dans la liste des aliments auto à ajouter
     public void AjouterAutoAliment(){
-        _rootDataref.child("AlimentsAutoEpicerie").setValue(alimentListAuto).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                GetListAlimentManuel();
-                Toast.makeText(context,"Reussii",Toast.LENGTH_LONG).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context,"Problème inattendue",Toast.LENGTH_LONG).show();
-            }
-        });
+        for (Aliment aliment : alimentListAuto){
+            String key = _rootDataref.push().getKey();
+            aliment.alimentKey = key;
+            _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment);
+        }
+
+        GetListAliment();
+
+    }
+
+    public void UpdateAliment(Aliment aliment){
+        _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).setValue(aliment);
     }
 
     public void SupprimerAliment(String key){

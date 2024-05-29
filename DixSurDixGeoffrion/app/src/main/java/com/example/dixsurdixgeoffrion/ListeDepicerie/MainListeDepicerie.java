@@ -21,10 +21,8 @@ import com.example.dixsurdixgeoffrion.Services.DialogService;
 import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
 import com.example.dixsurdixgeoffrion.databinding.MainListeDepicerieBinding;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class MainListeDepicerie extends AppCompatActivity {
@@ -137,7 +135,8 @@ public class MainListeDepicerie extends AppCompatActivity {
         epicerieAdapter.context = this;
         epicerieAdapter.listimages = this.listimages;
         epicerieAdapter.dialogService = dialogService;
-        _serviceEpicerie.GetListAlimentManuel();
+        epicerieAdapter._serviceEpicerie = _serviceEpicerie;
+        _serviceEpicerie.GetListAliment();
     }
 
 

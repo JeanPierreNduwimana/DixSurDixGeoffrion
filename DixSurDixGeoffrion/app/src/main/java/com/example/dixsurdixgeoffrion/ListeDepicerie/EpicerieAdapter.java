@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.R;
 import com.example.dixsurdixgeoffrion.Services.DialogService;
+import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
     private int index = 0; //index utilisés pour les images de diaporama
     public Context context;
     private MyViewHolder itemprincipal;
+    public ServiceEpicerie _serviceEpicerie;
     public DialogService dialogService;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -109,13 +111,19 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.itemAliment.setVisibility(View.VISIBLE);
             viewHolder.tvNomAliment.setText(alimentcourant.nom);
             viewHolder.tvQteAliment.setText(""+alimentcourant.quantite);
+            if (alimentcourant.validerAchat){
+                viewHolder.imgbtnValiderAliment.setVisibility(View.GONE);
+                viewHolder.tvMessageAchete.setVisibility(View.VISIBLE);
+                viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
+            }else{
+                viewHolder.imgbtnValiderAliment.setVisibility(View.VISIBLE);
+                viewHolder.tvMessageAchete.setVisibility(View.GONE);
+                viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_item_background_rcyclvw_aliment));
+            }
             Picasso.get().load(alimentcourant.imageUri).into(viewHolder.imgvwImageAliment);
-
             viewHolder.imgbtnValiderAliment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    //messageDialogOuiNon.setText("Valider l'achat de cette aliment? \n \n"  + alimentcourant.nom);
 
                     dialogService.InitDialogOuiOuNon("Valider l'achat de cette aliment? \n \n"  + alimentcourant.nom);
                     dialogService.btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
@@ -123,9 +131,10 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                         public void onClick(View view) {
                             viewHolder.imgbtnValiderAliment.setVisibility(View.GONE);
                             viewHolder.tvMessageAchete.setVisibility(View.VISIBLE);
-                            alimentcourant.validerAchat = true;
                             viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
                             viewHolder.itemView.setElevation(0);
+                            alimentcourant.validerAchat = true;
+                            _serviceEpicerie.UpdateAliment(alimentcourant);
                             updateProgression();
                             dialogService.dialogOuiOuNon.dismiss();
                         }
@@ -145,7 +154,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
 
                 }
             });
-
             viewHolder.imgvwImageAliment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -172,7 +180,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         if(nbdalimentValide == 0){
             return 0;}
 
-        int pourcentage = nbdalimentValide * 100 / listAliment.size();
+        int pourcentage = nbdalimentValide * 100 / (listAliment.size() -1); //Moins un à cause de l'item principal
         return pourcentage;
     }
 

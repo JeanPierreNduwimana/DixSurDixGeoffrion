@@ -12,8 +12,9 @@ public class Aliment {
     public Boolean validerAchat;
     public String imageUri;
     public Date dateAjout;
+    public Boolean alimentauto;
 
-    public Aliment(String Nom, String Description, int Quantite,Boolean ValiderAchat, String imageUri, Date dateAjout){
+    public Aliment(String Nom, String Description, int Quantite,Boolean ValiderAchat, String imageUri, Date dateAjout, Boolean alimentauto){
 
         this.nom = Nom;
         this.description = Description;
@@ -21,6 +22,7 @@ public class Aliment {
         this.validerAchat = ValiderAchat;
         this.imageUri = imageUri;
         this.dateAjout = dateAjout;
+        this.alimentauto = alimentauto;
 
     }
 
@@ -46,4 +48,5 @@ public class Aliment {
     public Date getDateAjout() {
         return dateAjout;
     }
+    public Boolean getAlimentauto() {return alimentauto;}
 }
