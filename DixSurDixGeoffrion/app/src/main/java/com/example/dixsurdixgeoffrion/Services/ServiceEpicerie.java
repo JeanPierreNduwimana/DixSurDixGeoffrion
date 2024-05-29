@@ -68,7 +68,11 @@ public class ServiceEpicerie {
                 if (snapshot.exists()){
                     Iterable<DataSnapshot> list = snapshot.getChildren();
                     for (DataSnapshot s : list){
-                        ajoutAutoAdapter.listAliment.add(s.getValue(AlimentAuto.class));
+
+                        AlimentAuto alimentAuto = s.getValue(AlimentAuto.class);
+                        if (!alimentAuto.isUsed()){
+                            ajoutAutoAdapter.listAliment.add(alimentAuto);
+                        }
                     }
 
                     ajoutAutoAdapter.notifyDataSetChanged();
@@ -141,24 +145,58 @@ public class ServiceEpicerie {
             _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment);
         }
 
+        alimentListAuto.clear();
         GetListAliment();
-
     }
 
     public void UpdateAliment(Aliment aliment){
         _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).setValue(aliment);
     }
 
-    public void SupprimerAliment(String key){
-        _rootDataref.child(key).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void UpdateUsedAutoAliment(AlimentAuto alimentAuto){
+        _rootDataref.child("Aliments Automatiques/" + alimentAuto.alimentKey).setValue(alimentAuto);
+    }
+
+    public void SupprimerAliment(Aliment aliment){
+
+
+        _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                rootStorage.child(key+".jpg").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        //do something
-                    }
-                });
+                if (aliment.alimentauto){
+                    _rootDataref.child("Aliments Automatiques").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Iterable<DataSnapshot> list = snapshot.getChildren();
+                            for (DataSnapshot s : list){
+                                if (s.getValue(AlimentAuto.class).nom.equals(aliment.nom)){
+                                    AlimentAuto alimentAuto = s.getValue(AlimentAuto.class);
+                                    alimentAuto.used = false;
+                                    alimentAuto.quantite = 0;
+                                    alimentAuto.validerAchat = false;
+                                    _rootDataref.child("Aliments Automatiques/" + alimentAuto.alimentKey).setValue(alimentAuto);
+                                    GetListAliment();
+                                    break;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }else {
+                    rootStorage.child(aliment.alimentKey+".jpg").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            //do something
+                            GetListAliment();
+                            Toast.makeText(context,"Image effacée",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
             }
         });
     }

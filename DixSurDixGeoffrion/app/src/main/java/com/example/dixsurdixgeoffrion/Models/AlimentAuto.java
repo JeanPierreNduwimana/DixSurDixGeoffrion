@@ -10,14 +10,16 @@ public class AlimentAuto {
     public int quantite;
     public Boolean validerAchat;
     public String imageUri;
+    public boolean used;
 
-    public AlimentAuto(String Nom, String Description, int Quantite, Boolean ValiderAchat, String imageUri){
+    public AlimentAuto(String Nom, String Description, int Quantite, Boolean ValiderAchat, String imageUri, boolean used){
 
         this.nom = Nom;
         this.description = Description;
         this.quantite = Quantite;
         this.validerAchat = ValiderAchat;
         this.imageUri = imageUri;
+        this.used = used;
 
     }
 
@@ -39,5 +41,8 @@ public class AlimentAuto {
     }
     public String getImageUri() {
         return imageUri;
+    }
+    public boolean isUsed() {
+        return used;
     }
 }

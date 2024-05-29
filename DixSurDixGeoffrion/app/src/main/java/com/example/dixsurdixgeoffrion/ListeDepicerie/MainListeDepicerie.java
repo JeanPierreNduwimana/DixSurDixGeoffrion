@@ -114,28 +114,26 @@ public class MainListeDepicerie extends AppCompatActivity {
     public void remplirRecycler(List<Aliment> listaliment) {
         epicerieAdapter.listAliment.clear();
         epicerieAdapter.listAliment.add(null);
-
-        //Mettre la liste d'aliment en ordre par date avant de l'ajouter au recycleview
-        listaliment.sort(Comparator.comparing(Aliment::getDateAjout));
-
-        //Ajout au recycleview
-        epicerieAdapter.listAliment.addAll(listaliment);
+        listaliment.sort(Comparator.comparing(Aliment::getDateAjout)); //liste d'aliments en ordre par date
+        epicerieAdapter.listAliment.addAll(listaliment); //Ajout au recycleview
         epicerieAdapter.notifyDataSetChanged();
     }
     private void initRecycler() {
 
         RecyclerView recyclerView = findViewById(R.id.recycle_liste_epicerie);
         recyclerView.setHasFixedSize(true);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
         epicerieAdapter = new EpicerieAdapter();
         recyclerView.setAdapter(epicerieAdapter);
+
+        //Init des propriétés public de l'adapter
         epicerieAdapter.context = this;
         epicerieAdapter.listimages = this.listimages;
         epicerieAdapter.dialogService = dialogService;
         epicerieAdapter._serviceEpicerie = _serviceEpicerie;
+
+        //Appel du service
         _serviceEpicerie.GetListAliment();
     }
 

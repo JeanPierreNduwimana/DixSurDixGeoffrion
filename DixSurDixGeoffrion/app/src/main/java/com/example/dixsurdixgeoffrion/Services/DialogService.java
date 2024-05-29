@@ -76,8 +76,11 @@ public class DialogService{
 
                 if (listAlimentsAuto != null && listAlimentsAuto.size() > 0){
 
-                    for (AlimentAuto alimentauto :
-                            listAlimentsAuto) {
+                    for (AlimentAuto alimentauto : listAlimentsAuto) {
+
+                        alimentauto.used = true;
+                        _serviceEpicerie.UpdateUsedAutoAliment(alimentauto);
+
                         _serviceEpicerie.alimentListAuto.add(
                                 new Aliment(
                                         alimentauto.nom,
@@ -89,6 +92,7 @@ public class DialogService{
                                         true
                                 ));
                     }
+                    listAlimentsAuto.clear();
                     _serviceEpicerie.AjouterAutoAliment();
                 }
 
@@ -233,9 +237,27 @@ public class DialogService{
         TextView tv_dialog_details_description= dialog_dtlsAliment.findViewById(R.id.txt_dtlsALiment_description);
         Button btn_dialog_details_validate = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_validate);
         Button btn_dialog_details_annulerAchat = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_annuler_achat);
+        TextView btn_dialog_details_delete = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAlimenent_delete);
         ImageView imgvwDetailsAliment = dialog_dtlsAliment.findViewById(R.id.imgvw_dialog_imageDetailsAliment);
+
         tv_dialog_details_description.setText(aliment.description);
         Picasso.get().load(aliment.imageUri).into(imgvwDetailsAliment);
+
+        btn_dialog_details_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InitDialogOuiOuNon("Voulez vous supprimer cette aliment? \n" + aliment.nom);
+                btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        _serviceEpicerie.SupprimerAliment(aliment);
+                        dialogOuiOuNon.dismiss();
+                        dialog_dtlsAliment.dismiss();
+                    }
+                });
+                dialogOuiOuNon.show();
+            }
+        });
 
         if (aliment.validerAchat){
             //on change les boutons dans le dialog détails

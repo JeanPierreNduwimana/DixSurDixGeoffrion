@@ -83,7 +83,16 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.itemView.setClickable(false);
             viewHolder.itemAliment.setVisibility(View.GONE);
             viewHolder.itemPrincipal.setVisibility(View.VISIBLE);
-            viewHolder.progressBar.setProgress(getprogression());
+
+            if ((listAliment.size() -1) > 0){
+                viewHolder.progressBar.setVisibility(View.VISIBLE);
+                viewHolder.progressBar.setProgress(getprogression());
+
+            }else{
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
+
+
             itemprincipal = viewHolder;
 
             Handler handler = new Handler();
@@ -172,8 +181,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         int nbdalimentValide = 0;
 
         for (Aliment aliment : listAliment) {
-            if (aliment != null)
-            {
+            if (aliment != null) {
                 if (aliment.validerAchat){nbdalimentValide++;}
             }
         }
