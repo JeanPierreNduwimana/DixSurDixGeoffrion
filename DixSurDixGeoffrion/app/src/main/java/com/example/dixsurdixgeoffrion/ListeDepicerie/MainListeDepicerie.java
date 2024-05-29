@@ -21,7 +21,10 @@ import com.example.dixsurdixgeoffrion.Services.DialogService;
 import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
 import com.example.dixsurdixgeoffrion.databinding.MainListeDepicerieBinding;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class MainListeDepicerie extends AppCompatActivity {
@@ -29,7 +32,7 @@ public class MainListeDepicerie extends AppCompatActivity {
     MainListeDepicerieBinding binding;
     EpicerieAdapter epicerieAdapter;
     Boolean isExpanded = false;
-    List<Integer> listimages = new ArrayList<>();
+    List<Integer> listimages = new ArrayList<>(); //images pour le diaporama
     DialogService dialogService;
     ServiceEpicerie _serviceEpicerie;
     ImageView imageView;
@@ -52,10 +55,11 @@ public class MainListeDepicerie extends AppCompatActivity {
         View view = binding.getRoot();
         setTitle("Liste d'épicerie");
         setContentView(view);
-        setListimages();
+        setListimages(); //images pour le diaporama
         _serviceEpicerie = new ServiceEpicerie(MainListeDepicerie.this);
         dialogService = new DialogService(MainListeDepicerie.this,_serviceEpicerie);
 
+        //region BINDINGS
 
         binding.extfabAuto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,9 +103,9 @@ public class MainListeDepicerie extends AppCompatActivity {
             }
         });
 
-        initRecycler();
-        //remplirRecycler();
+        //endregion
 
+        initRecycler();
     }
 
     public void UploadImageAliment(ImageView imageView){
@@ -109,29 +113,16 @@ public class MainListeDepicerie extends AppCompatActivity {
         this.imageView = imageView;
     }
 
-    private void setListimages() {
-        listimages.add(R.drawable.banane);
-        listimages.add(R.drawable.patates);
-        listimages.add(R.drawable.pommes);
-        listimages.add(R.drawable.raisins);
-    }
-
     public void remplirRecycler(List<Aliment> listaliment) {
         epicerieAdapter.listAliment.clear();
         epicerieAdapter.listAliment.add(null);
 
-       //List<Aliment> listaliment;
+        //Mettre la liste d'aliment en ordre par date avant de l'ajouter au recycleview
+        listaliment.sort(Comparator.comparing(Aliment::getDateAjout));
 
-        for (Aliment aliment : listaliment) {
-            epicerieAdapter.listAliment.add(aliment);
-        }
-
+        //Ajout au recycleview
+        epicerieAdapter.listAliment.addAll(listaliment);
         epicerieAdapter.notifyDataSetChanged();
-
-        /*for(int i = 1; i < 40; i++){
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
-            epicerieAdapter.listAliment.add(new Aliment("Aliment" + i,"Ceci est la Description de l'alimaent duméro: " + i,"Key" + i,i,false,listimages.get(randomNum)));
-        }*/
     }
     private void initRecycler() {
 
@@ -145,8 +136,20 @@ public class MainListeDepicerie extends AppCompatActivity {
         recyclerView.setAdapter(epicerieAdapter);
         epicerieAdapter.context = this;
         epicerieAdapter.listimages = this.listimages;
-        _serviceEpicerie.GetListAliment();
+        _serviceEpicerie.GetListAlimentManuel();
     }
+
+
+    //region ANIMATIONS & FLOAT ACTION BUTTON
+
+    //Ces images servent à mettre en marche le diaporama
+    private void setListimages() {
+        listimages.add(R.drawable.banane);
+        listimages.add(R.drawable.patates);
+        listimages.add(R.drawable.pommes);
+        listimages.add(R.drawable.raisins);
+    }
+
     public void shrinkFab() {
         binding.fabAdd.startAnimation(rotateAntiClockWiseFabAnim());
         //binding.fabAdd.setBackgroundTintList(this.getResources().getColorStateList(R.color.purple_200, null));
@@ -194,4 +197,6 @@ public class MainListeDepicerie extends AppCompatActivity {
     private Animation rotateAntiClockWiseFabAnim (){
         return AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise);
     }
+
+    //endregion
 }

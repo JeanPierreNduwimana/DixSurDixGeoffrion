@@ -1,9 +1,8 @@
 package com.example.dixsurdixgeoffrion.Models;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Aliment {
+public class AlimentAuto {
 
     public String alimentKey;
     public String nom;
@@ -11,20 +10,18 @@ public class Aliment {
     public int quantite;
     public Boolean validerAchat;
     public String imageUri;
-    public Date dateAjout;
 
-    public Aliment(String Nom, String Description, int Quantite,Boolean ValiderAchat, String imageUri, Date dateAjout){
+    public AlimentAuto(String Nom, String Description, int Quantite, Boolean ValiderAchat, String imageUri){
 
         this.nom = Nom;
         this.description = Description;
         this.quantite = Quantite;
         this.validerAchat = ValiderAchat;
         this.imageUri = imageUri;
-        this.dateAjout = dateAjout;
 
     }
 
-    public Aliment(){}
+    public AlimentAuto(){}
     public String getAlimentKey() {
         return alimentKey;
     }
@@ -42,8 +39,5 @@ public class Aliment {
     }
     public String getImageUri() {
         return imageUri;
-    }
-    public Date getDateAjout() {
-        return dateAjout;
     }
 }

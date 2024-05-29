@@ -16,40 +16,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dixsurdixgeoffrion.ListeDepicerie.AjoutAutoAdapter;
 import com.example.dixsurdixgeoffrion.ListeDepicerie.MainListeDepicerie;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
+import com.example.dixsurdixgeoffrion.Models.AlimentAuto;
 import com.example.dixsurdixgeoffrion.R;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DialogService{
     public MainListeDepicerie context;
     ServiceEpicerie _serviceEpicerie;
-    List<Integer> listimages;
-    List<Aliment> listPosAlimentsAuto; //Recoit tout les positions des aliments automatiques à ajouter dans la bd.
+    List<AlimentAuto> listAlimentsAuto; //Recoit tout les aliments automatiques à ajouter dans la bd.
     public Uri imageUri;
 
     public DialogService(MainListeDepicerie current_activity, ServiceEpicerie serviceEpicerie){
         context = current_activity;
         _serviceEpicerie = serviceEpicerie;
-        listimages = new ArrayList<>();
-        listPosAlimentsAuto = new ArrayList<>();
-        setListimages();
+        listAlimentsAuto = new ArrayList<>();
     }
 
-    private void setListimages() {
-        listimages.add(R.drawable.banane);
-        listimages.add(R.drawable.patates);
-        listimages.add(R.drawable.pommes);
-        listimages.add(R.drawable.raisins);
-    }
+    //Ajoute ou enleve l'aliment à ajouter dans la bd
+    public void AjoutAlimentAuto(AlimentAuto aliment){
 
-    //Ajoute ou enleve la position de l'aliment à ajouter dans la bd
-    public void AjoutPositionAlimentAuto(Aliment aliment){
-
-        if (listPosAlimentsAuto.contains(aliment)){
-            listPosAlimentsAuto.remove(aliment);
+        if (listAlimentsAuto.contains(aliment)){
+            listAlimentsAuto.remove(aliment);
         }else {
-            listPosAlimentsAuto.add(aliment);
+            listAlimentsAuto.add(aliment);
         }
     }
 
@@ -74,14 +68,24 @@ public class DialogService{
             @Override
             public void onClick(View view) {
 
-                if (listPosAlimentsAuto != null && listPosAlimentsAuto.size() > 0){
-                    _serviceEpicerie.alimentListAuto = listPosAlimentsAuto;
-                   // _serviceEpicerie.AjouterAliment(listPosAlimentsAuto.get(0),Uri.parse(listPosAlimentsAuto.get(0).imageUri),true);
+                if (listAlimentsAuto != null && listAlimentsAuto.size() > 0){
 
-                    _serviceEpicerie.AjouterAutoAliment(0);
+                    for (AlimentAuto alimentauto :
+                            listAlimentsAuto) {
+                        _serviceEpicerie.alimentListAuto.add(
+                                new Aliment(
+                                        alimentauto.nom,
+                                        alimentauto.description,
+                                        alimentauto.quantite,
+                                        alimentauto.validerAchat,
+                                        alimentauto.imageUri,
+                                        Date.from(Instant.now())
+                                ));
+                    }
+                    _serviceEpicerie.AjouterAutoAliment();
                 }
 
-               // dialog.dismiss();
+                dialog.dismiss();
             }
         });
         dialog.findViewById(R.id.btn_ajtAutoAliment_cancel).setOnClickListener(new View.OnClickListener() {
@@ -163,7 +167,7 @@ public class DialogService{
                 String nomAliment = edt_nomAliment.getText().toString();
                 String descripAliment = edt_descripAliment.getText().toString();
                 int quantite = Integer.valueOf(tv_quantite.getText().toString());
-                Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString());
+                Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString(), Date.from(Instant.now()));
 
                 //Execution de la méthode du service
                 _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri,false);
