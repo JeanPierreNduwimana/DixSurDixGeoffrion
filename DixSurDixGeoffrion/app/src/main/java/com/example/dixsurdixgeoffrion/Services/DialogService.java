@@ -6,7 +6,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,10 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dixsurdixgeoffrion.ListeDepicerie.AjoutAutoAdapter;
+import com.example.dixsurdixgeoffrion.ListeDepicerie.EpicerieAdapter;
 import com.example.dixsurdixgeoffrion.ListeDepicerie.MainListeDepicerie;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.Models.AlimentAuto;
 import com.example.dixsurdixgeoffrion.R;
+import com.squareup.picasso.Picasso;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -27,6 +31,8 @@ import java.util.List;
 
 public class DialogService{
     public MainListeDepicerie context;
+    public Dialog dialogOuiOuNon; //Est utilisé pour initialiser le dialog à reponse Oui ou Non
+    public Button btn_Rep_Oui_dialog_OuiNon;//Est utilisé par d'autres classe pour les actions à faire quand la réponse est Oui
     ServiceEpicerie _serviceEpicerie;
     List<AlimentAuto> listAlimentsAuto; //Recoit tout les aliments automatiques à ajouter dans la bd.
     public Uri imageUri;
@@ -183,14 +189,132 @@ public class DialogService{
 
     }
 
-    public void showDialogFullImage(){
+    public void showDialogFullImage(Aliment aliment, AlimentAuto alimentAuto){
         Dialog dialogAfficheImageAlimet = new Dialog(context);
         dialogAfficheImageAlimet.setContentView(R.layout.dialog_show_image_full);
         ImageView imagealiment = dialogAfficheImageAlimet.findViewById(R.id.imgvw_image_alimentfull);
-        //  imagealiment.setImageDrawable(context.getDrawable(alimentcourant.Photo));
+        if (aliment != null) {
+            Picasso.get().load(aliment.imageUri).into(imagealiment);
+        }else{
+            Picasso.get().load(alimentAuto.imageUri).into(imagealiment);
+        }
+
         dialogAfficheImageAlimet.show();
         dialogAfficheImageAlimet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialogAfficheImageAlimet.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialogAfficheImageAlimet.getWindow().setGravity(Gravity.CENTER);
     }
+
+    public void InitDialogOuiOuNon(String Message){
+        dialogOuiOuNon = new Dialog(context);
+        dialogOuiOuNon.setContentView(R.layout.dialog_yes_not);
+        TextView messageDialogOuiNon = dialogOuiOuNon.findViewById(R.id.txt_dialog_question_oui_non);
+        btn_Rep_Oui_dialog_OuiNon = dialogOuiOuNon.findViewById(R.id.btn_dialog_rep_oui);
+        messageDialogOuiNon.setText(Message);
+
+        dialogOuiOuNon.findViewById(R.id.btn_dialog_rep_non).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogOuiOuNon.dismiss();
+            }
+        });
+
+        dialogOuiOuNon.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogOuiOuNon.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialogOuiOuNon.getWindow().setGravity(Gravity.CENTER);
+
+    }
+
+    public void showDialogDetailsAliment(Aliment aliment, ImageButton imgbtnValiderAliment, TextView tvMessageAchete, View itemView, EpicerieAdapter epicerieAdapter){
+
+
+        Dialog dialog_dtlsAliment = new Dialog(context);
+        dialog_dtlsAliment.setContentView(R.layout.details_aliment);
+        TextView tv_dialog_details_description= dialog_dtlsAliment.findViewById(R.id.txt_dtlsALiment_description);
+        Button btn_dialog_details_validate = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_validate);
+        Button btn_dialog_details_annulerAchat = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_annuler_achat);
+        ImageView imgvwDetailsAliment = dialog_dtlsAliment.findViewById(R.id.imgvw_dialog_imageDetailsAliment);
+        tv_dialog_details_description.setText(aliment.description);
+        Picasso.get().load(aliment.imageUri).into(imgvwDetailsAliment);
+
+        if (aliment.validerAchat){
+            //on change les boutons dans le dialog détails
+            btn_dialog_details_validate.setVisibility(View.GONE);
+            btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
+
+            btn_dialog_details_annulerAchat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // messageDialogOuiNon.setText("Annuler cette aliment? \n \n"  + alimentcourant.nom);
+
+                    InitDialogOuiOuNon("Annuler cette aliment? \n \n"  + aliment.nom);
+
+
+                    btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //si on appui sur oui dans le dialog_dtlsAliment, l'achat est annulé,
+                            //on change les les bouton du dialog_dtlsAliment
+                            btn_dialog_details_validate.setVisibility(View.GONE);
+                            btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
+                            //on enleve le message sur son item et réaffiche le bouton
+                            imgbtnValiderAliment.setVisibility(View.VISIBLE);
+                            tvMessageAchete.setVisibility(View.GONE);
+                            //on met à jour les couleurs de l'item
+                            itemView.setBackground(context.getDrawable(R.drawable.shape_item_background_rcyclvw_aliment));
+                            itemView.setElevation(5);
+                            //on change l'etat achat
+                            aliment.validerAchat = false;
+                            dialogOuiOuNon.dismiss();
+                            dialog_dtlsAliment.dismiss();
+                        }
+                    });
+
+                    dialogOuiOuNon.show();
+
+                }
+            });
+        }
+        else{
+            btn_dialog_details_validate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //si on valide l'achat à partir du dialog_dtlsAliment
+                    //on affiche le message dans le diagOUiNon
+                    InitDialogOuiOuNon("Valider l'achat de cette aliment? \n \n"  + aliment.nom);
+                    //messageDialogOuiNon.setText("Valider l'achat de cette aliment? \n \n"  + alimentcourant.nom);
+                    //on change les boutons du dialog_dtlsAliment
+                    btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            btn_dialog_details_validate.setVisibility(View.GONE);
+                            btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
+                            //on enleve le bouton de l'item et on affiche le message
+                            imgbtnValiderAliment.setVisibility(View.GONE);
+                            tvMessageAchete.setVisibility(View.VISIBLE);
+                            itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
+                            itemView.setElevation(0);
+                            aliment.validerAchat = true;
+                            epicerieAdapter.updateProgression();
+                            dialogOuiOuNon.dismiss();
+                            dialog_dtlsAliment.dismiss();
+                        }
+                    });
+
+                    dialogOuiOuNon.show();
+
+                }
+            });
+        }
+
+        dialog_dtlsAliment.show();
+        dialog_dtlsAliment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog_dtlsAliment.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog_dtlsAliment.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog_dtlsAliment.getWindow().setGravity(Gravity.BOTTOM);
+
+
+    }
+
 }

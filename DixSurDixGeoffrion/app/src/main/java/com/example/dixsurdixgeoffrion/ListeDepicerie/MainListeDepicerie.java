@@ -136,6 +136,7 @@ public class MainListeDepicerie extends AppCompatActivity {
         recyclerView.setAdapter(epicerieAdapter);
         epicerieAdapter.context = this;
         epicerieAdapter.listimages = this.listimages;
+        epicerieAdapter.dialogService = dialogService;
         _serviceEpicerie.GetListAlimentManuel();
     }
 

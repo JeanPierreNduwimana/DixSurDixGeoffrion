@@ -48,8 +48,7 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
         }
     }
 
-    public AjoutAutoAdapter(){ listAliment = new ArrayList<>();
-    }
+    public AjoutAutoAdapter(){ listAliment = new ArrayList<>();}
 
     public AjoutAutoAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
 
@@ -93,6 +92,7 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
             }
         });
 
+        //Button de selection des aliments automatiques à ajouter à la liste d'épicerie
         viewHolder.imgbtn_selection_aliment.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
@@ -112,10 +112,11 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
             }
         });
 
+        //Appui sur l'image pour l'afficher en plein écran
         viewHolder.imgvw_ImageAliment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogService.showDialogFullImage();
+                dialogService.showDialogFullImage(null,alimentcourant);
             }
         });
 
