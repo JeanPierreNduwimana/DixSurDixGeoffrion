@@ -1,4 +1,5 @@
 package com.example.dixsurdixgeoffrion.Services;
+import android.app.Dialog;
 import android.net.Uri;
 import android.widget.Toast;
 
@@ -19,7 +20,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ServiceEpicerie {
@@ -36,7 +39,6 @@ public class ServiceEpicerie {
         rootStorage = FirebaseStorage.getInstance().getReference().child("AlimentImages");
         context = current_context;
     }
-
     public void GetListAliment(){
 
         _rootDataref.child("AlimentsEpicerie").addValueEventListener(new ValueEventListener() {
@@ -60,7 +62,6 @@ public class ServiceEpicerie {
             }
         });
     }
-
     public void GetListAutoAliment(AjoutAutoAdapter ajoutAutoAdapter) {
         _rootDataref.child("Aliments Automatiques").addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,7 +86,6 @@ public class ServiceEpicerie {
             }
         });
     }
-
     public void AjouterAliment(Aliment aliment, Uri imageUri){
 
        // rootStorage = FirebaseStorage.getInstance().getReference().child("AlimentImages");
@@ -135,9 +135,19 @@ public class ServiceEpicerie {
                     }
                 });
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context,"Erreur d'ajout de photo",Toast.LENGTH_LONG).show();
+            }
         }); //addonprogresslistener possible.
     }
-
+    public void AjouterAlimentSansImage(Aliment aliment){
+        String key = _rootDataref.push().getKey();
+        aliment.alimentKey = key;
+        aliment.imageUri = "https://firebasestorage.googleapis.com/v0/b/projet-test-f9f8c.appspot.com/o/AlimentImages%2FAlimentsAutomatiques%2FDefaultAliment0001.jpg?alt=media&token=edddf31a-d178-4f4c-85a7-e3b116644dab";
+        _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment);
+    }
     public void AjouterAutoAliment(){
         for (Aliment aliment : alimentListAuto){
             String key = _rootDataref.push().getKey();
@@ -148,15 +158,12 @@ public class ServiceEpicerie {
         alimentListAuto.clear();
         GetListAliment();
     }
-
     public void UpdateAliment(Aliment aliment){
         _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).setValue(aliment);
     }
-
     public void UpdateUsedAutoAliment(AlimentAuto alimentAuto){
         _rootDataref.child("Aliments Automatiques/" + alimentAuto.alimentKey).setValue(alimentAuto);
     }
-
     public void SupprimerAliment(Aliment aliment){
 
 

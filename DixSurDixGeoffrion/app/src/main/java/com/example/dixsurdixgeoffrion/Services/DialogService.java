@@ -23,10 +23,8 @@ import com.example.dixsurdixgeoffrion.Models.AlimentAuto;
 import com.example.dixsurdixgeoffrion.R;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -181,10 +179,17 @@ public class DialogService{
                 String nomAliment = edt_nomAliment.getText().toString();
                 String descripAliment = edt_descripAliment.getText().toString();
                 int quantite = Integer.valueOf(tv_quantite.getText().toString());
-                Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString(), Date.from(Instant.now()),false);
 
-                //Execution de la méthode du service
-                _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri);
+                if (imageUri == null){
+                    Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,null, Date.from(Instant.now()),false);
+                    //Execution de la méthode du service
+                    _serviceEpicerie.AjouterAlimentSansImage(nouvelAliment);
+
+                }else{
+                    Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString(), Date.from(Instant.now()),false);
+                    //Execution de la méthode du service
+                    _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri);
+                }
                 dialog.dismiss();
             }
         });
