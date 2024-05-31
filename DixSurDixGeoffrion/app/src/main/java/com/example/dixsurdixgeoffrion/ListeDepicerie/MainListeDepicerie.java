@@ -66,7 +66,6 @@ public class MainListeDepicerie extends AppCompatActivity {
                 _serviceEpicerie.GetListAliment();
             }
         });
-
         binding.extfabAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,7 +107,24 @@ public class MainListeDepicerie extends AppCompatActivity {
                 }
             }
         });
+        binding.btnEffacerListe.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                String dialogMessage =
+                        "Êtes vous sûr d'effacer toute la liste? \n" +
+                        "Cette liste sera effacée pour tout le monde.";
+                dialogService.InitDialogOuiOuNon(dialogMessage);
+                dialogService.btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        _serviceEpicerie.SupprimerToutLesAliments(epicerieAdapter.listAliment);
+                        dialogService.dialogOuiOuNon.dismiss();
+                    }
+                });
+                dialogService.dialogOuiOuNon.show();
 
+            }
+        });
         //endregion
 
         initRecycler();
@@ -120,12 +136,21 @@ public class MainListeDepicerie extends AppCompatActivity {
     }
 
     public void remplirRecycler(List<Aliment> listaliment) {
+        if (listaliment.size() == 0){
+            binding.btnEffacerListe.setVisibility(View.INVISIBLE);
+            binding.btnEffacerListe.setClickable(false);
+        }else{
+            binding.btnEffacerListe.setVisibility(View.VISIBLE);
+            binding.btnEffacerListe.setClickable(true);
+        }
+
         epicerieAdapter.listAliment.clear();
         epicerieAdapter.listAliment.add(null);
         listaliment.sort(Comparator.comparing(Aliment::getDateAjout)); //liste d'aliments en ordre par date
         epicerieAdapter.listAliment.addAll(listaliment); //Ajout au recycleview
         epicerieAdapter.notifyDataSetChanged();
         binding.swiperefresh.setRefreshing(false);
+
     }
     private void initRecycler() {
         RecyclerView recyclerView = findViewById(R.id.recycle_liste_epicerie);

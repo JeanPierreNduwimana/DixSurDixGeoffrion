@@ -94,10 +94,10 @@ public class ServiceEpicerie {
         String key = _rootDataref.push().getKey();
 
         //Ajout de l'image d'abord, enfin de l'associer à l'aliment après
-        rootStorage.child(key+".jpg").putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        rootStorage.child("AlimentsManuels").child(key+".jpg").putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                rootStorage.child(key+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                rootStorage.child("AlimentsManuels").child(key+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
 
@@ -154,7 +154,6 @@ public class ServiceEpicerie {
             aliment.alimentKey = key;
             _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment);
         }
-
         alimentListAuto.clear();
         GetListAliment();
     }
@@ -194,7 +193,7 @@ public class ServiceEpicerie {
                         }
                     });
                 }else {
-                    rootStorage.child(aliment.alimentKey+".jpg").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    rootStorage.child("AlimentsManuels").child(aliment.alimentKey+".jpg").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             //do something
@@ -206,6 +205,19 @@ public class ServiceEpicerie {
 
             }
         });
+    }
+    public void SupprimerToutLesAliments(List<Aliment> aliments){
+
+
+
+        //Comme la liste aliments provient de l'adapter, on supprime le premier element qui est null.
+        aliments.remove(0);
+        //Suppresion dans le storage
+        for (Aliment aliment : aliments) {
+            rootStorage.child("AlimentsManuels").child(aliment.alimentKey + ".jpg").delete();
+        }
+        _rootDataref.child("AlimentsEpicerie").removeValue();
+        
     }
 
 
