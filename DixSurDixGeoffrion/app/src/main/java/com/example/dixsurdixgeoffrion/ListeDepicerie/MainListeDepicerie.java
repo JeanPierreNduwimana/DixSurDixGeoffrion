@@ -1,5 +1,6 @@
 package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
+import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -57,6 +58,7 @@ public class MainListeDepicerie extends AppCompatActivity {
         setListimages(); //images pour le diaporama
         _serviceEpicerie = new ServiceEpicerie(MainListeDepicerie.this);
         dialogService = new DialogService(MainListeDepicerie.this,_serviceEpicerie);
+        _serviceEpicerie.dialogService = dialogService;
 
         //region BINDINGS
 
@@ -83,7 +85,6 @@ public class MainListeDepicerie extends AppCompatActivity {
         binding.fabAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 dialogService.showDialogAjoutAutoAliment();
                 shrinkFab();
             }
@@ -117,7 +118,10 @@ public class MainListeDepicerie extends AppCompatActivity {
                 dialogService.btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        _serviceEpicerie.SupprimerToutLesAliments(epicerieAdapter.listAliment);
+                        if (epicerieAdapter.listAliment.size() > 1){
+                            _serviceEpicerie.SupprimerToutLesAliments(epicerieAdapter.listAliment);
+                        }
+
                         dialogService.dialogOuiOuNon.dismiss();
                     }
                 });
@@ -148,8 +152,12 @@ public class MainListeDepicerie extends AppCompatActivity {
         epicerieAdapter.listAliment.add(null);
         listaliment.sort(Comparator.comparing(Aliment::getDateAjout)); //liste d'aliments en ordre par date
         epicerieAdapter.listAliment.addAll(listaliment); //Ajout au recycleview
+        _serviceEpicerie.alimentList.clear();
         epicerieAdapter.notifyDataSetChanged();
         binding.swiperefresh.setRefreshing(false);
+        if (dialogService.dialogLoadingWaiting != null){
+            dialogService.dialogLoadingWaiting.dismiss();
+        }
 
     }
     private void initRecycler() {

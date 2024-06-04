@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ import java.util.Locale;
 public class DialogService{
     public MainListeDepicerie context;
     public Dialog dialogOuiOuNon; //Est utilisé pour initialiser le dialog à reponse Oui ou Non
+    public Dialog dialogLoadingWaiting; //Est utilisé pour l'attente durant les requetes
     public Button btn_Rep_Oui_dialog_OuiNon;//Est utilisé par d'autres classe pour les actions à faire quand la réponse est Oui
     ServiceEpicerie _serviceEpicerie;
     List<AlimentAuto> listAlimentsAuto; //Recoit tout les aliments automatiques à ajouter dans la bd.
@@ -53,7 +55,6 @@ public class DialogService{
             listAlimentsAuto.add(aliment);
         }
     }
-
     public void showDialogAjoutAutoAliment() {
 
         Dialog dialog = new Dialog(context);
@@ -68,8 +69,11 @@ public class DialogService{
         recyclerView.setAdapter(ajoutAutoAdapter);
         ajoutAutoAdapter.context = dialog.getContext();
         ajoutAutoAdapter.dialogService = this;
+        recyclerView.setVisibility(View.GONE);
+        ProgressBar progressBar = dialog.findViewById(R.id.progressAutoAliment);
+        progressBar.setVisibility(View.VISIBLE);
 
-        _serviceEpicerie.GetListAutoAliment(ajoutAutoAdapter);
+        _serviceEpicerie.GetListAutoAliment(ajoutAutoAdapter,recyclerView, progressBar);
 
         dialog.findViewById(R.id.extfab_validate_auto_aliment).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +116,6 @@ public class DialogService{
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
-
     public void showDialogAjoutAliment() {
 
         Dialog dialog = new Dialog(context);
@@ -201,7 +204,6 @@ public class DialogService{
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
-
     public void showDialogFullImage(Aliment aliment, AlimentAuto alimentAuto){
         Dialog dialogAfficheImageAlimet = new Dialog(context);
         dialogAfficheImageAlimet.setContentView(R.layout.dialog_show_image_full);
@@ -217,7 +219,6 @@ public class DialogService{
         dialogAfficheImageAlimet.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialogAfficheImageAlimet.getWindow().setGravity(Gravity.CENTER);
     }
-
     public void InitDialogOuiOuNon(String Message){
         dialogOuiOuNon = new Dialog(context);
         dialogOuiOuNon.setContentView(R.layout.dialog_yes_not);
@@ -237,7 +238,6 @@ public class DialogService{
         dialogOuiOuNon.getWindow().setGravity(Gravity.CENTER);
 
     }
-
     public void showDialogDetailsAliment(Aliment aliment, ImageButton imgbtnValiderAliment, TextView tvMessageAchete, View itemView, EpicerieAdapter epicerieAdapter){
 
         Dialog dialog_dtlsAliment = new Dialog(context);
@@ -314,8 +314,6 @@ public class DialogService{
                     btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                           // btn_dialog_details_validate.setVisibility(View.GONE);
-                           // btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
                             //on enleve le bouton de l'item et on affiche le message
                             imgbtnValiderAliment.setVisibility(View.GONE);
                             tvMessageAchete.setVisibility(View.VISIBLE);
@@ -343,5 +341,18 @@ public class DialogService{
 
 
     }
+    public void showDialogLoadingWaiting(){
+        dialogLoadingWaiting = new Dialog(context);
+        dialogLoadingWaiting.setContentView(R.layout.dialog_loading_waiting);
+        dialogLoadingWaiting.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogLoadingWaiting.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialogLoadingWaiting.getWindow().setGravity(Gravity.CENTER);
+        dialogLoadingWaiting.show();
+    }
 
+    public void dismissDialogLoadingWaiting(){
+        if (dialogLoadingWaiting != null){
+            dialogLoadingWaiting.dismiss();
+        }
+    }
 }

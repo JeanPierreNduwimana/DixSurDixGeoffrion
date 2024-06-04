@@ -59,12 +59,23 @@
 
 
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_ajout_auto_aliment"
+    <LinearLayout
+        android:id="@+id/recycleview_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"/>
-
+        android:layout_weight="6"
+        android:orientation="horizontal">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_ajout_auto_aliment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ProgressBar
+            android:id="@+id/progressAutoAliment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+    </LinearLayout>
 </LinearLayout>
 
 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
