@@ -1,6 +1,6 @@
 package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
-import android.app.Dialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.dixsurdixgeoffrion.EspaceFamille.AccueilEspaceFamille;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
+import com.example.dixsurdixgeoffrion.Profile.MainProfileActivity;
 import com.example.dixsurdixgeoffrion.R;
 import com.example.dixsurdixgeoffrion.Services.DialogService;
 import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
@@ -62,6 +64,18 @@ public class MainListeDepicerie extends AppCompatActivity {
 
         //region BINDINGS
 
+        binding.imgvMainIconHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainListeDepicerie.this, AccueilEspaceFamille.class));
+            }
+        });
+        binding.imgvMainIconProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainListeDepicerie.this, MainProfileActivity.class));
+            }
+        });
         binding.swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
