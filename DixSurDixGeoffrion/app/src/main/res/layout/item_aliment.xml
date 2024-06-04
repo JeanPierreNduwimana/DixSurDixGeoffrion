@@ -26,13 +26,14 @@
                     android:orientation="horizontal"
                     android:gravity="center">
 
-                    <ImageView
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/imgvw_image_aliment"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="15dp"
-                        android:src="@drawable/image_24" />
+                        android:src="@drawable/image_24"
+                        app:shapeAppearanceOverlay="@style/RoundedSquare"/>
 
                     <TextView
                         android:id="@+id/txt_nom_aliment"

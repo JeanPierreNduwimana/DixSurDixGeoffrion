@@ -13,16 +13,17 @@
         android:theme="@style/Theme.DixSurDixGeoffrion"
         tools:targetApi="31">
 
-        <activity android:name=".ListeDepicerie.MainListeDepicerie"
+        <activity android:name=".SplashActivity"
             android:exported="true"
-           android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".ListeDepicerie.MainListeDepicerie"
+            android:exported="true"
+           android:screenOrientation="portrait" />
 
         <activity android:name=".EspaceFamille.AccueilEspaceFamille"
             android:exported="true"

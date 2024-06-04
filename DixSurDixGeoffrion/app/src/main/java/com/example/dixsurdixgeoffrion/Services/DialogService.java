@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -182,6 +183,11 @@ public class DialogService{
                 String nomAliment = edt_nomAliment.getText().toString();
                 String descripAliment = edt_descripAliment.getText().toString();
                 int quantite = Integer.valueOf(tv_quantite.getText().toString());
+
+                if (nomAliment.equals("")){
+                    edt_nomAliment.setError("Ce champs ne peut pas être vide");
+                    return;
+                }
 
                 if (imageUri == null){
                     Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,null, Date.from(Instant.now()),false);

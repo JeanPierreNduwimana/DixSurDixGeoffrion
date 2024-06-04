@@ -153,7 +153,7 @@ public class ServiceEpicerie {
     public void AjouterAlimentSansImage(Aliment aliment){
         String key = _rootDataref.push().getKey();
         aliment.alimentKey = key;
-        aliment.imageUri = "https://firebasestorage.googleapis.com/v0/b/projet-test-f9f8c.appspot.com/o/AlimentImages%2FAlimentsAutomatiques%2FDefaultAliment0001.jpg?alt=media&token=edddf31a-d178-4f4c-85a7-e3b116644dab";
+        aliment.imageUri = "https://firebasestorage.googleapis.com/v0/b/projet-test-f9f8c.appspot.com/o/AlimentImages%2FGeoffrionStockImages%2Fgeoffrion_main_icon.png?alt=media&token=7f3bfefc-18c2-4f16-9b5c-ba82109c361d";
         _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment);
         GetListAliment();
     }
@@ -218,6 +218,49 @@ public class ServiceEpicerie {
         });
     }
     public void SupprimerToutLesAliments(List<Aliment> aliments){
+
+
+        _rootDataref.child("Aliments Automatiques").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot snapshot) {
+                //Comme la liste aliments provient de l'adapter, on supprime le premier element qui est null.
+                if (aliments.size() > 0){
+                    aliments.remove(0);
+                }
+
+                Iterable<DataSnapshot> list = snapshot.getChildren();
+                List<AlimentAuto> alimentAutos = new ArrayList<>();
+                for (DataSnapshot s : list){
+                    alimentAutos.add(s.getValue(AlimentAuto.class));
+                }
+
+                for(Aliment aliment : aliments){
+                    _rootDataref.child("AlimentsEpicerie").child(aliment.alimentKey).removeValue();
+                    if (aliment.alimentauto){
+                        for (AlimentAuto alimentAuto : alimentAutos){
+                            if (alimentAuto.nom.equals(aliment.nom)){
+                                alimentAuto.used = false;
+                                alimentAuto.quantite = 0;
+                                alimentAuto.validerAchat = false;
+                                _rootDataref.child("Aliments Automatiques/" + alimentAuto.alimentKey).setValue(alimentAuto);
+                            }
+                        }
+                    }else{
+                        rootStorage.child("AlimentsManuels").child(aliment.alimentKey + ".jpg").delete();
+                    }
+                }
+
+                GetListAliment();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+        /*
         _rootDataref.child("Aliments Automatiques").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -256,7 +299,7 @@ public class ServiceEpicerie {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        }); */
         
     }
 
