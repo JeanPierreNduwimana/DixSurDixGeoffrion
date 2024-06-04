@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Handler;
 
 public class DialogService{
     public MainListeDepicerie context;
@@ -242,7 +243,6 @@ public class DialogService{
                 dialogOuiOuNon.dismiss();
             }
         });
-
         dialogOuiOuNon.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialogOuiOuNon.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialogOuiOuNon.getWindow().setGravity(Gravity.CENTER);
@@ -308,6 +308,7 @@ public class DialogService{
                             _serviceEpicerie.UpdateAliment(aliment);
                             dialogOuiOuNon.dismiss();
                             dialog_dtlsAliment.dismiss();
+                            _serviceEpicerie.GetListAliment();
                         }
                     });
 
@@ -334,6 +335,7 @@ public class DialogService{
                             epicerieAdapter.updateProgression();
                             dialogOuiOuNon.dismiss();
                             dialog_dtlsAliment.dismiss();
+                            _serviceEpicerie.GetListAliment();
                         }
                     });
 
@@ -357,6 +359,7 @@ public class DialogService{
         dialogLoadingWaiting.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialogLoadingWaiting.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialogLoadingWaiting.getWindow().setGravity(Gravity.CENTER);
+        dialogLoadingWaiting.setCanceledOnTouchOutside(false);
         dialogLoadingWaiting.show();
     }
 

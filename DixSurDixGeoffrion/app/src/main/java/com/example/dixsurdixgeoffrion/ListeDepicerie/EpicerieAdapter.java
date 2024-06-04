@@ -2,6 +2,7 @@ package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,11 +42,13 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         public TextView tvNomAliment;
         public TextView tvQteAliment;
         public TextView tvMessageAchete;
+        public TextView tvProgressPourcentage;
         public ImageButton imgbtnValiderAliment;
         public LinearLayout  itemAliment;
         public LinearLayout itemPrincipal;
         public ImageView imgvwDiaporama;
         public ProgressBar progressBar;
+        public LinearLayout progressbarContainer;
 
 
         public MyViewHolder(LinearLayout v) {
@@ -60,6 +63,8 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             itemPrincipal = v.findViewById(R.id.item_principal);
             imgvwDiaporama = v.findViewById(R.id.imgvw_diaporama);
             progressBar = v.findViewById(R.id.progressbar);
+            tvProgressPourcentage = v.findViewById(R.id.progress_pourcentage);
+            progressbarContainer = v.findViewById(R.id.progressbar_container);
         }
     }
     public EpicerieAdapter() {
@@ -85,14 +90,23 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.itemPrincipal.setVisibility(View.VISIBLE);
 
             if ((listAliment.size() -1) > 0){
-                viewHolder.progressBar.setVisibility(View.VISIBLE);
-                viewHolder.progressBar.setProgress(getprogression());
-            }else{ viewHolder.progressBar.setVisibility(View.GONE);}
+                viewHolder.progressbarContainer.setVisibility(View.VISIBLE);
+                int progress = getprogression();
+                viewHolder.progressBar.setProgress(progress);
+
+                if (progress < 100){
+                    viewHolder.tvProgressPourcentage.setText( String.valueOf(progress) + "%");
+                    viewHolder.tvProgressPourcentage.setBackground(null);
+                }else{
+                    viewHolder.tvProgressPourcentage.setText(null);
+                    viewHolder.tvProgressPourcentage.setBackground(context.getDrawable(R.drawable.icecream_24));
+                }
+            }else{ viewHolder.progressbarContainer.setVisibility(View.GONE);}
 
             itemprincipal = viewHolder;
-            Handler handler = new Handler();
-            int delay = 5000; //five sec
-            handler.postDelayed(new Runnable(){
+          //  Handler handler = new Handler();
+           // int delay = 5000; //five sec
+           /* handler.postDelayed(new Runnable(){
                 public void run(){
                     //do process here
                     handler.postDelayed(this, delay); // recall
@@ -107,7 +121,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                     }
 
                 }
-            }, delay);
+            }, delay); */
         }
         else {
             viewHolder.itemView.setClickable(true);
@@ -141,6 +155,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                             _serviceEpicerie.UpdateAliment(alimentcourant);
                             updateProgression();
                             dialogService.dialogOuiOuNon.dismiss();
+                            _serviceEpicerie.GetListAliment();
                         }
                     });
                     dialogService.dialogOuiOuNon.show();
