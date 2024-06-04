@@ -155,6 +155,7 @@ public class ServiceEpicerie {
         aliment.alimentKey = key;
         aliment.imageUri = "https://firebasestorage.googleapis.com/v0/b/projet-test-f9f8c.appspot.com/o/AlimentImages%2FAlimentsAutomatiques%2FDefaultAliment0001.jpg?alt=media&token=edddf31a-d178-4f4c-85a7-e3b116644dab";
         _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment);
+        GetListAliment();
     }
     public void AjouterAutoAliment(){
         for (Aliment aliment : alimentListAuto){
