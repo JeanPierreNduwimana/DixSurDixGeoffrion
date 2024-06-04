@@ -114,7 +114,7 @@ public class MainListeDepicerie extends AppCompatActivity {
                 String dialogMessage =
                         "Êtes vous sûr d'effacer toute la liste? \n" +
                         "Cette liste sera effacée pour tout le monde.";
-                dialogService.InitDialogOuiOuNon(dialogMessage);
+                dialogService.InitDialogOuiOuNon(dialogMessage,null);
                 dialogService.btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

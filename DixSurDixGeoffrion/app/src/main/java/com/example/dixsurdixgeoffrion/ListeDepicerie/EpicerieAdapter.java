@@ -129,7 +129,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 @Override
                 public void onClick(View view) {
 
-                    dialogService.InitDialogOuiOuNon("Valider l'achat de cette aliment? \n \n"  + alimentcourant.nom);
+                    dialogService.InitDialogOuiOuNon("Valider l'achat de cette aliment? \n \n"  + alimentcourant.nom, alimentcourant.imageUri);
                     dialogService.btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

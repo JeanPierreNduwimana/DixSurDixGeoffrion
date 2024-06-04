@@ -219,12 +219,16 @@ public class DialogService{
         dialogAfficheImageAlimet.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialogAfficheImageAlimet.getWindow().setGravity(Gravity.CENTER);
     }
-    public void InitDialogOuiOuNon(String Message){
+    public void InitDialogOuiOuNon(String Message, String ImageUri){
         dialogOuiOuNon = new Dialog(context);
         dialogOuiOuNon.setContentView(R.layout.dialog_yes_not);
         TextView messageDialogOuiNon = dialogOuiOuNon.findViewById(R.id.txt_dialog_question_oui_non);
+        ImageView imageDialogOuiNon = dialogOuiOuNon.findViewById(R.id.imgv_dialog_question_oui_non);
         btn_Rep_Oui_dialog_OuiNon = dialogOuiOuNon.findViewById(R.id.btn_dialog_rep_oui);
         messageDialogOuiNon.setText(Message);
+        if (ImageUri != null){
+            Picasso.get().load(ImageUri).into(imageDialogOuiNon);
+        }
 
         dialogOuiOuNon.findViewById(R.id.btn_dialog_rep_non).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,7 +262,7 @@ public class DialogService{
         btn_dialog_details_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InitDialogOuiOuNon("Voulez vous supprimer cette aliment? \n" + aliment.nom);
+                InitDialogOuiOuNon("Voulez vous supprimer cette aliment? \n" + aliment.nom, aliment.imageUri);
                 btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -279,7 +283,7 @@ public class DialogService{
             btn_dialog_details_annulerAchat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    InitDialogOuiOuNon("Annuler cette aliment? \n \n"  + aliment.nom);
+                    InitDialogOuiOuNon("Annuler cette aliment? \n \n"  + aliment.nom, aliment.imageUri);
                     btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -310,7 +314,7 @@ public class DialogService{
             btn_dialog_details_validate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    InitDialogOuiOuNon("Valider l'achat de cette aliment? \n \n"  + aliment.nom);
+                    InitDialogOuiOuNon("Valider l'achat de cette aliment? \n \n"  + aliment.nom, aliment.imageUri);
                     btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
