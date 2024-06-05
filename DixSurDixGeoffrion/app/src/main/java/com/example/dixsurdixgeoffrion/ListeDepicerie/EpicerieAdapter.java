@@ -50,6 +50,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         public LinearLayout itemPrincipal;
         public ProgressBar progressBar;
         public LinearLayout progressbarContainer;
+        public LinearLayout quantityContainer;
 
 
         public MyViewHolder(LinearLayout v) {
@@ -65,6 +66,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             progressBar = v.findViewById(R.id.progressbar);
             tvProgressPourcentage = v.findViewById(R.id.progress_pourcentage);
             progressbarContainer = v.findViewById(R.id.progressbar_container);
+            quantityContainer = v.findViewById(R.id.quantite_container);
         }
     }
     public EpicerieAdapter() {
@@ -132,7 +134,13 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.itemPrincipal.setVisibility(View.GONE);
             viewHolder.itemAliment.setVisibility(View.VISIBLE);
             viewHolder.tvNomAliment.setText(alimentcourant.nom);
-            viewHolder.tvQteAliment.setText(""+alimentcourant.quantite);
+
+            if (alimentcourant.quantite > 0){
+                viewHolder.tvQteAliment.setText(""+alimentcourant.quantite);
+            }else{
+                viewHolder.tvQteAliment.setText("-");
+            }
+
             if (alimentcourant.validerAchat){
                 viewHolder.imgbtnValiderAliment.setVisibility(View.GONE);
                 viewHolder.tvMessageAchete.setVisibility(View.VISIBLE);

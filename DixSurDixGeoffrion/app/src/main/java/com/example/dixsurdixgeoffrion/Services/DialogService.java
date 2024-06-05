@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Handler;
 
 public class DialogService{
     public MainListeDepicerie context;
@@ -251,11 +249,12 @@ public class DialogService{
     public void showDialogDetailsAliment(Aliment aliment, ImageButton imgbtnValiderAliment, TextView tvMessageAchete, View itemView, EpicerieAdapter epicerieAdapter){
 
         Dialog dialog_dtlsAliment = new Dialog(context);
-        dialog_dtlsAliment.setContentView(R.layout.details_aliment);
+        dialog_dtlsAliment.setContentView(R.layout.dialog_details_aliment);
         TextView tv_dialog_details_description= dialog_dtlsAliment.findViewById(R.id.txt_dtlsALiment_description);
         Button btn_dialog_details_validate = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_validate);
         Button btn_dialog_details_annulerAchat = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAliment_annuler_achat);
         TextView btn_dialog_details_delete = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAlimenent_delete);
+        TextView btn_dialog_details_cancel = dialog_dtlsAliment.findViewById(R.id.dialog_details_cancel);
         TextView tv_dateAjoutAliment = dialog_dtlsAliment.findViewById(R.id.date_AjoutAliment);
         ImageView imgvwDetailsAliment = dialog_dtlsAliment.findViewById(R.id.imgvw_dialog_imageDetailsAliment);
 
@@ -264,6 +263,13 @@ public class DialogService{
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, new Locale("fr", "FR"));
         tv_dateAjoutAliment.setText(dateFormat.format(aliment.dateAjout).toString());
         Picasso.get().load(aliment.imageUri).into(imgvwDetailsAliment);
+
+        btn_dialog_details_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog_dtlsAliment.dismiss();
+            }
+        });
 
         btn_dialog_details_delete.setOnClickListener(new View.OnClickListener() {
             @Override
