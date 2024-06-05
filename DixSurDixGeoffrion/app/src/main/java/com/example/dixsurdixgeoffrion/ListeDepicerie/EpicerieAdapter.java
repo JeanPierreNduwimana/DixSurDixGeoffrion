@@ -8,7 +8,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,7 +48,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         public ImageButton imgbtnValiderAliment;
         public LinearLayout  itemAliment;
         public LinearLayout itemPrincipal;
-        public ImageView imgvwDiaporama;
         public ProgressBar progressBar;
         public LinearLayout progressbarContainer;
 
@@ -61,7 +62,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             imgbtnValiderAliment = v.findViewById(R.id.imgbtn_valider_aliment);
             itemAliment =  v.findViewById(R.id.item_aliment);
             itemPrincipal = v.findViewById(R.id.item_principal);
-            imgvwDiaporama = v.findViewById(R.id.imgvw_diaporama);
             progressBar = v.findViewById(R.id.progressbar);
             tvProgressPourcentage = v.findViewById(R.id.progress_pourcentage);
             progressbarContainer = v.findViewById(R.id.progressbar_container);
@@ -97,13 +97,17 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 if (progress < 100){
                     viewHolder.tvProgressPourcentage.setText( String.valueOf(progress) + "%");
                     viewHolder.tvProgressPourcentage.setBackground(null);
+                    viewHolder.tvProgressPourcentage.setTextColor(context.getResources().getColor(R.color.black,null));
+                    viewHolder.progressBar.setProgressTintList(context.getResources().getColorStateList(R.color.hard_blue,null));
                 }else{
-                    viewHolder.tvProgressPourcentage.setText(null);
-                    viewHolder.tvProgressPourcentage.setBackground(context.getDrawable(R.drawable.icecream_24));
+                    viewHolder.tvProgressPourcentage.setText("100%");
+                    viewHolder.tvProgressPourcentage.setTextColor(context.getResources().getColor(R.color.hard_green,null));
+                    viewHolder.progressBar.setProgressTintList(context.getResources().getColorStateList(R.color.hard_green,null));
                 }
             }else{ viewHolder.progressbarContainer.setVisibility(View.GONE);}
 
             itemprincipal = viewHolder;
+
           //  Handler handler = new Handler();
            // int delay = 5000; //five sec
            /* handler.postDelayed(new Runnable(){
