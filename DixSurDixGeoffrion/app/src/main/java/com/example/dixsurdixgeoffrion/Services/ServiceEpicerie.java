@@ -169,6 +169,35 @@ public class ServiceEpicerie {
     public void UpdateAliment(Aliment aliment){
         _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).setValue(aliment);
     }
+
+    public void UpdateAliment(Aliment aliment, Uri imageUri){
+
+        final String Path =  "AlimentsManuels/" + aliment.alimentKey + ".jpg";
+        rootStorage.child(Path).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                rootStorage.child(Path).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        rootStorage.child(Path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                aliment.imageUri = uri.toString();
+                                UpdateAliment(aliment);
+                                GetListAliment();
+                            }
+                        });
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
     public void UpdateUsedAutoAliment(AlimentAuto alimentAuto){
         _rootDataref.child("Aliments Automatiques").child(alimentAuto.alimentKey).setValue(alimentAuto);
     }
@@ -219,7 +248,6 @@ public class ServiceEpicerie {
     }
     public void SupprimerToutLesAliments(List<Aliment> aliments){
 
-
         _rootDataref.child("Aliments Automatiques").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot snapshot) {
@@ -258,48 +286,6 @@ public class ServiceEpicerie {
 
             }
         });
-
-
-        /*
-        _rootDataref.child("Aliments Automatiques").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                //Comme la liste aliments provient de l'adapter, on supprime le premier element qui est null.
-                if (aliments.size() > 0){
-                    aliments.remove(0);
-                }
-
-                Iterable<DataSnapshot> list = snapshot.getChildren();
-                List<AlimentAuto> alimentAutos = new ArrayList<>();
-                for (DataSnapshot s : list){
-                    alimentAutos.add(s.getValue(AlimentAuto.class));
-                }
-
-                for(Aliment aliment : aliments){
-                    _rootDataref.child("AlimentsEpicerie").child(aliment.alimentKey).removeValue();
-                    if (aliment.alimentauto){
-                        for (AlimentAuto alimentAuto : alimentAutos){
-                            if (alimentAuto.nom.equals(aliment.nom)){
-                                alimentAuto.used = false;
-                                alimentAuto.quantite = 0;
-                                alimentAuto.validerAchat = false;
-                                _rootDataref.child("Aliments Automatiques/" + alimentAuto.alimentKey).setValue(alimentAuto);
-                            }
-                        }
-                    }else{
-                        rootStorage.child("AlimentsManuels").child(aliment.alimentKey + ".jpg").delete();
-                    }
-                }
-
-                GetListAliment();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        }); */
         
     }
 

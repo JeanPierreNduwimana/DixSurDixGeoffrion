@@ -110,8 +110,8 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
 
             itemprincipal = viewHolder;
 
-          //  Handler handler = new Handler();
-           // int delay = 5000; //five sec
+            //  Handler handler = new Handler();
+            // int delay = 5000; //five sec
            /* handler.postDelayed(new Runnable(){
                 public void run(){
                     //do process here

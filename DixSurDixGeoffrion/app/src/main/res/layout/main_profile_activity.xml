@@ -23,7 +23,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="italic"
-            android:text="Bientot vous allez pouvoir avoir votre propre profil. \n En ayant votre compte, il faudra d'abord vous connecter pour avoir votre accès dans l'application."/>
+            android:text="Bientot vous allez pouvoir avoir votre propre profil. \n Un fois que vous aurez votre compte, il faudra vous connecter pour accèder dans l'application."/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

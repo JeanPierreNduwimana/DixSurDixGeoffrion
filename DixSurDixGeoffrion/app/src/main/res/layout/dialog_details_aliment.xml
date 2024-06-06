@@ -23,29 +23,52 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginBottom="10dp">
+                android:layout_height="180dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/dialog_details_cancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:drawableTop="@drawable/cancel_24"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:id="@+id/dialog_details_cancel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/cancel_24"
+                        android:layout_gravity="left|center"/>
+                    <ImageButton
+                        android:id="@+id/imgbtn_dialog_details_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/edit_24"
+                        android:layout_gravity="center"
+                        android:background="@color/yellow"
+                        android:padding="5dp"/>
+
+                    <TextView
+                        android:id="@+id/btn_dtlsAlimenent_delete"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/delete_24"
+                        android:layout_gravity="end"/>
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/imgvw_dialog_imageDetailsAliment"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/image_24"
                     android:scaleType="fitCenter"/>
 
-                <TextView
-                    android:id="@+id/btn_dtlsAlimenent_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/delete_24"/>
+
             </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/date_AjoutAliment"

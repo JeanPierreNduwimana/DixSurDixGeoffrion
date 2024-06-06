@@ -92,7 +92,7 @@ public class MainListeDepicerie extends AppCompatActivity {
         binding.extfabManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogService.showDialogAjoutAliment();
+                dialogService.showDialogAjoutAliment(null);
                 shrinkFab();
             }
         });
@@ -106,7 +106,7 @@ public class MainListeDepicerie extends AppCompatActivity {
         binding.fabManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogService.showDialogAjoutAliment();
+                dialogService.showDialogAjoutAliment(null);
                 shrinkFab();
 
             }
@@ -127,7 +127,7 @@ public class MainListeDepicerie extends AppCompatActivity {
             public void onClick(View view) {
                 String dialogMessage =
                         "Êtes vous sûr d'effacer toute la liste? \n" +
-                        "Cette liste sera effacée pour tout le monde.";
+                        "Cette liste sera effacée pour tout le monde qu'y a accès.";
                 dialogService.InitDialogOuiOuNon(dialogMessage,null);
                 dialogService.btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -116,10 +116,9 @@ public class DialogService{
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
-    public void showDialogAjoutAliment() {
+    public void showDialogAjoutAliment(Aliment aliment) {
 
         Dialog dialog = new Dialog(context);
-
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.ajout_aliment);
 
@@ -131,6 +130,15 @@ public class DialogService{
         TextView btn_diminuer = dialog.findViewById(R.id.btn_ajtAliment_diminuer);
         TextView btn_augmenter = dialog.findViewById(R.id.btn_ajtAliment_augmenter);
         ImageView imgvwImageAliment = dialog.findViewById(R.id.image_aliment_ajout);
+
+        if (aliment != null){
+            btn_validate.setText("Modifier");
+            btn_validate.setTextColor(context.getColor(R.color.yellow));
+            edt_nomAliment.setText(aliment.nom);
+            edt_descripAliment.setText(aliment.description);
+            tv_quantite.setText(String.valueOf(aliment.quantite));
+            Picasso.get().load(aliment.imageUri).into(imgvwImageAliment);
+        }
 
         //ImageView clickable pour upload l'image pour un nouvel aliment
         imgvwImageAliment.setOnClickListener(new View.OnClickListener() {
@@ -188,16 +196,31 @@ public class DialogService{
                     return;
                 }
 
-                if (imageUri == null){
-                    Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,null, Date.from(Instant.now()),false);
-                    //Execution de la méthode du service
-                    _serviceEpicerie.AjouterAlimentSansImage(nouvelAliment);
-
+                if (aliment != null){
+                    aliment.nom = nomAliment;
+                    aliment.description = descripAliment;
+                    aliment.quantite = quantite;
+                    aliment.dateAjout = Date.from(Instant.now());
+                    //Si l'image a été modifier ou pas
+                    if (imageUri != null){
+                        _serviceEpicerie.UpdateAliment(aliment,imageUri);
+                    }else{
+                        _serviceEpicerie.UpdateAliment(aliment);
+                        _serviceEpicerie.GetListAliment();
+                    }
                 }else{
-                    Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString(), Date.from(Instant.now()),false);
-                    //Execution de la méthode du service
-                    _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri);
+                    if (imageUri == null){
+                        Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,null, Date.from(Instant.now()),false);
+                        //Execution de la méthode du service
+                        _serviceEpicerie.AjouterAlimentSansImage(nouvelAliment);
+
+                    }else{
+                        Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString(), Date.from(Instant.now()),false);
+                        //Execution de la méthode du service
+                        _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri);
+                    }
                 }
+
                 dialog.dismiss();
             }
         });
@@ -246,6 +269,9 @@ public class DialogService{
         dialogOuiOuNon.getWindow().setGravity(Gravity.CENTER);
 
     }
+
+    /*INFO: les propriètés imgbutton, txtview, view ou adapter servent à changer l'état de l'item
+        dans la liste principale du recycleview par apport à l'état de validitié de l'aliment. */
     public void showDialogDetailsAliment(Aliment aliment, ImageButton imgbtnValiderAliment, TextView tvMessageAchete, View itemView, EpicerieAdapter epicerieAdapter){
 
         Dialog dialog_dtlsAliment = new Dialog(context);
@@ -257,6 +283,7 @@ public class DialogService{
         TextView btn_dialog_details_cancel = dialog_dtlsAliment.findViewById(R.id.dialog_details_cancel);
         TextView tv_dateAjoutAliment = dialog_dtlsAliment.findViewById(R.id.date_AjoutAliment);
         ImageView imgvwDetailsAliment = dialog_dtlsAliment.findViewById(R.id.imgvw_dialog_imageDetailsAliment);
+        ImageButton imgbtn_dialog_details_edit = dialog_dtlsAliment.findViewById(R.id.imgbtn_dialog_details_edit);
 
         tv_dialog_details_description.setText(aliment.description);
         String pattern = "EEEE dd MMMM yyyy HH:mm:ss";
@@ -286,6 +313,20 @@ public class DialogService{
                 dialogOuiOuNon.show();
             }
         });
+
+        imgbtn_dialog_details_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogAjoutAliment(aliment);
+                dialog_dtlsAliment.dismiss();
+            }
+        });
+
+
+        if (aliment.alimentauto){
+            imgbtn_dialog_details_edit.setVisibility(View.GONE);
+            imgbtn_dialog_details_edit.setClickable(false);
+        }
 
         if (aliment.validerAchat){
             //on change les boutons dans le dialog détails

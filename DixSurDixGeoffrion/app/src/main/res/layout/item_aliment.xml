@@ -17,7 +17,7 @@
         android:layout_height="75dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -103,8 +103,8 @@
     <LinearLayout
         android:id="@+id/item_principal"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:visibility="gone">
+        android:layout_height="wrap_content"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
