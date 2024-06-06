@@ -102,11 +102,19 @@ public class AjoutAutoAdapter extends RecyclerView.Adapter<AjoutAutoAdapter.MyVi
                     viewHolder.imgbtn_selection_aliment.setBackgroundTintList(context.getResources().getColorStateList(R.color.blue,null));
                     viewHolder.imgbtn_selection_aliment.setImageDrawable(context.getDrawable(R.drawable.add_24));
                     alimentcourant.quantite = Integer.parseInt(viewHolder.tv_qtAliment.getText().toString());
+                    viewHolder.btn_diminuerQtAliment.setVisibility(View.VISIBLE);
+                    viewHolder.btn_augmenterQtAliment.setVisibility(View.VISIBLE);
+                    viewHolder.btn_diminuerQtAliment.setClickable(true);
+                    viewHolder.btn_augmenterQtAliment.setClickable(true);
                     dialogService.AjoutAlimentAuto(alimentcourant);
                 }else{
                     viewHolder.imgbtn_selection_aliment.setBackgroundTintList(context.getResources().getColorStateList(R.color.white,null));
                     viewHolder.imgbtn_selection_aliment.setImageDrawable(context.getDrawable(R.drawable.check_24_blue));
                     alimentcourant.quantite = Integer.parseInt(viewHolder.tv_qtAliment.getText().toString());
+                    viewHolder.btn_diminuerQtAliment.setVisibility(View.INVISIBLE);
+                    viewHolder.btn_augmenterQtAliment.setVisibility(View.INVISIBLE);
+                    viewHolder.btn_diminuerQtAliment.setClickable(false);
+                    viewHolder.btn_augmenterQtAliment.setClickable(false);
                     dialogService.AjoutAlimentAuto(alimentcourant);
                 }
             }
