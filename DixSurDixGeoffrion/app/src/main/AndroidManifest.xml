@@ -33,6 +33,14 @@
             android:exported="true"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".Profile.ProfilePublicActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".ConnectionErrorActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
     </application>
 
 

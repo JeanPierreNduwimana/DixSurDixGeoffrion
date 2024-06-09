@@ -34,7 +34,6 @@ public class MainListeDepicerie extends AppCompatActivity {
     MainListeDepicerieBinding binding;
     EpicerieAdapter epicerieAdapter;
     Boolean isExpanded = false;
-    List<Integer> listimages = new ArrayList<>(); //images pour le diaporama
     DialogService dialogService;
     ServiceEpicerie _serviceEpicerie;
     ImageView imageView;
@@ -57,7 +56,6 @@ public class MainListeDepicerie extends AppCompatActivity {
         View view = binding.getRoot();
         setTitle("Liste d'épicerie");
         setContentView(view);
-        setListimages(); //images pour le diaporama
         _serviceEpicerie = new ServiceEpicerie(MainListeDepicerie.this);
         dialogService = new DialogService(MainListeDepicerie.this,_serviceEpicerie);
         _serviceEpicerie.dialogService = dialogService;
@@ -184,7 +182,6 @@ public class MainListeDepicerie extends AppCompatActivity {
 
         //Init des propriétés public de l'adapter
         epicerieAdapter.context = this;
-        epicerieAdapter.listimages = this.listimages;
         epicerieAdapter.dialogService = dialogService;
         epicerieAdapter._serviceEpicerie = _serviceEpicerie;
 
@@ -194,14 +191,6 @@ public class MainListeDepicerie extends AppCompatActivity {
 
 
     //region ANIMATIONS & FLOAT ACTION BUTTON
-
-    //Ces images servent à mettre en marche le diaporama
-    private void setListimages() {
-        listimages.add(R.drawable.banane);
-        listimages.add(R.drawable.patates);
-        listimages.add(R.drawable.pommes);
-        listimages.add(R.drawable.raisins);
-    }
 
     public void shrinkFab() {
         binding.fabAdd.startAnimation(rotateAntiClockWiseFabAnim());

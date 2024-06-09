@@ -68,7 +68,14 @@
 
             </LinearLayout>
 
-
+            <TextView
+                android:id="@+id/txt_details_nom_aliment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="patates"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
                 android:id="@+id/date_AjoutAliment"
@@ -77,7 +84,7 @@
                 android:text="date"
                 android:textStyle="italic"
                 android:paddingLeft="8dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="12dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

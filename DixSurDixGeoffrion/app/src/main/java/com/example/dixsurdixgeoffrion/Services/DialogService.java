@@ -282,10 +282,12 @@ public class DialogService{
         TextView btn_dialog_details_delete = dialog_dtlsAliment.findViewById(R.id.btn_dtlsAlimenent_delete);
         TextView btn_dialog_details_cancel = dialog_dtlsAliment.findViewById(R.id.dialog_details_cancel);
         TextView tv_dateAjoutAliment = dialog_dtlsAliment.findViewById(R.id.date_AjoutAliment);
+        TextView tv_nomAliment = dialog_dtlsAliment.findViewById(R.id.txt_details_nom_aliment);
         ImageView imgvwDetailsAliment = dialog_dtlsAliment.findViewById(R.id.imgvw_dialog_imageDetailsAliment);
         ImageButton imgbtn_dialog_details_edit = dialog_dtlsAliment.findViewById(R.id.imgbtn_dialog_details_edit);
 
         tv_dialog_details_description.setText(aliment.description);
+        tv_nomAliment.setText(aliment.nom);
         String pattern = "EEEE dd MMMM yyyy HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, new Locale("fr", "FR"));
         tv_dateAjoutAliment.setText(dateFormat.format(aliment.dateAjout).toString());
@@ -403,7 +405,7 @@ public class DialogService{
     public void showDialogLoadingWaiting(){
         dialogLoadingWaiting = new Dialog(context);
         dialogLoadingWaiting.setContentView(R.layout.dialog_loading_waiting);
-        dialogLoadingWaiting.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogLoadingWaiting.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dialogLoadingWaiting.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialogLoadingWaiting.getWindow().setGravity(Gravity.CENTER);
         dialogLoadingWaiting.setCanceledOnTouchOutside(false);

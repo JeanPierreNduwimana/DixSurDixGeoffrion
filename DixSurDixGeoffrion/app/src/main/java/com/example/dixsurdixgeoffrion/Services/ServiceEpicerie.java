@@ -1,6 +1,7 @@
 package com.example.dixsurdixgeoffrion.Services;
 import android.net.Uri;
 import android.view.View;
+import android.os.Handler;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import com.example.dixsurdixgeoffrion.ListeDepicerie.AjoutAutoAdapter;
 import com.example.dixsurdixgeoffrion.ListeDepicerie.MainListeDepicerie;
 import com.example.dixsurdixgeoffrion.Models.Aliment;
 import com.example.dixsurdixgeoffrion.Models.AlimentAuto;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,13 +31,11 @@ public class ServiceEpicerie {
 
     public List<Aliment> alimentList = new ArrayList<>(); //Cette liste sert à envoyer une liste d'aliments dans la liste d'epicerie principal
     public List<Aliment> alimentListAuto = new ArrayList<>(); //Cette liste sert à ajouter des aliments automatiques selectionnés
-
-    public List<AlimentAuto> alimentAutoList = new ArrayList<>();
     private DatabaseReference _rootDataref;
     private StorageReference rootStorage;
     private MainListeDepicerie context;
-
     public DialogService dialogService;
+    public Handler handler;
 
 
     public ServiceEpicerie(MainListeDepicerie current_context){
@@ -63,6 +63,12 @@ public class ServiceEpicerie {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context,"Problème inattendue",Toast.LENGTH_LONG).show();
+                dialogService.dismissDialogLoadingWaiting();
+            }
+        }).addOnCanceledListener(new OnCanceledListener() {
+            @Override
+            public void onCanceled() {
                 Toast.makeText(context,"Problème inattendue",Toast.LENGTH_LONG).show();
                 dialogService.dismissDialogLoadingWaiting();
             }
@@ -169,7 +175,6 @@ public class ServiceEpicerie {
     public void UpdateAliment(Aliment aliment){
         _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).setValue(aliment);
     }
-
     public void UpdateAliment(Aliment aliment, Uri imageUri){
 
         final String Path =  "AlimentsManuels/" + aliment.alimentKey + ".jpg";
@@ -240,6 +245,17 @@ public class ServiceEpicerie {
                             GetListAliment();
                             Toast.makeText(context,"Image effacée",Toast.LENGTH_LONG).show();
                         }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //S'il n'y a pas d'images
+                            GetListAliment();
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            Toast.makeText(context,"haha",Toast.LENGTH_LONG).show();
+                        }
                     });
                 }
 
@@ -288,6 +304,4 @@ public class ServiceEpicerie {
         });
         
     }
-
-
 }

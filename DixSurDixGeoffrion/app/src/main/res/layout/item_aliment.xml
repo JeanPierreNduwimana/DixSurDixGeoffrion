@@ -39,7 +39,7 @@
                 android:id="@+id/txt_nom_aliment"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:autoSizeMinTextSize="12dp"
+                android:autoSizeMinTextSize="8dp"
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"
                 android:text="Nom Aliment"
@@ -128,6 +128,7 @@
                     android:background="@color/white">
 
                     <LinearLayout
+                        android:id="@+id/item_scrollview_jeanpierre"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -141,7 +142,41 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="Lundi" />
+                            android:text="Lundi"
+                            android:textColor="@color/black"/>
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_marginBottom="5dp"
+                            android:src="@mipmap/ic_launcher"
+                            app:shapeAppearanceOverlay="@style/Circular" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:autoSizeMaxTextSize="16dp"
+                            android:autoSizeMinTextSize="12dp"
+                            android:maxLines="1"
+                            android:text="Arbi"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/shape_item_background_rcyclvw_aliment"
+                        android:elevation="5dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="Mardi"
+                            android:textColor="@color/black"/>
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="45dp"
@@ -173,7 +208,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="Lundi" />
+                            android:text="Mercredi"
+                            android:textColor="@color/black"/>
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="45dp"
@@ -188,7 +224,7 @@
                             android:autoSizeMaxTextSize="16dp"
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
-                            android:text="Jean Pierre"
+                            android:text="Henry"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -205,7 +241,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="Lundi" />
+                            android:text="Jeudi"
+                            android:textColor="@color/black"/>
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="45dp"
@@ -217,10 +254,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="12dp"
+                            android:maxLength="13"
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="10sp"
+                            android:autoSizeTextType="uniform"
                             android:maxLines="1"
-                            android:text="Jean Pierre"
+                            android:text="Tout le monde"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -237,7 +276,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="Lundi" />
+                            android:text="Vendredi"
+                            android:textColor="@color/black"/>
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="45dp"
@@ -252,7 +292,7 @@
                             android:autoSizeMaxTextSize="16dp"
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
-                            android:text="Jean Pierre"
+                            android:text="Maman"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -269,7 +309,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="Lundi" />
+                            android:text="Samedi"
+                            android:textColor="@color/black"/>
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="45dp"
@@ -284,7 +325,7 @@
                             android:autoSizeMaxTextSize="16dp"
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
-                            android:text="Jean Pierre"
+                            android:text="Nana"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -301,39 +342,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="Lundi" />
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_marginBottom="5dp"
-                            android:src="@mipmap/ic_launcher"
-                            app:shapeAppearanceOverlay="@style/Circular" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="12dp"
-                            android:maxLines="1"
-                            android:text="Jean Pierre"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/shape_item_background_rcyclvw_aliment"
-                        android:elevation="5dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:text="Dimanche" />
+                            android:text="Dimanche"
+                            android:textColor="@color/black"/>
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="45dp"
@@ -351,7 +361,6 @@
                             android:text="Arnaud"
                             android:textStyle="bold" />
                     </LinearLayout>
-
                 </LinearLayout>
 
 

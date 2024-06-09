@@ -2,6 +2,7 @@ package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.Gravity;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dixsurdixgeoffrion.Models.Aliment;
+import com.example.dixsurdixgeoffrion.Profile.ProfilePublicActivity;
 import com.example.dixsurdixgeoffrion.R;
 import com.example.dixsurdixgeoffrion.Services.DialogService;
 import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
@@ -31,8 +33,6 @@ import java.util.List;
 public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyViewHolder> {
 
     public List<Aliment> listAliment;
-    public List<Integer> listimages = new ArrayList<>(); // pour le diaporama
-    private int index = 0; //index utilisés pour les images de diaporama
     public Context context;
     private MyViewHolder itemprincipal;
     public ServiceEpicerie _serviceEpicerie;
@@ -52,6 +52,12 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         public LinearLayout progressbarContainer;
         public LinearLayout quantityContainer;
 
+        //region scrollview
+
+        public LinearLayout itemScrollJeanPierre;
+
+        //endregion
+
 
         public MyViewHolder(LinearLayout v) {
             super(v);
@@ -67,6 +73,13 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             tvProgressPourcentage = v.findViewById(R.id.progress_pourcentage);
             progressbarContainer = v.findViewById(R.id.progressbar_container);
             quantityContainer = v.findViewById(R.id.quantite_container);
+
+            //region scrollview
+
+            itemScrollJeanPierre = v.findViewById(R.id.item_scrollview_jeanpierre);
+
+            //endregion
+
         }
     }
     public EpicerieAdapter() {
@@ -91,6 +104,14 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.itemAliment.setVisibility(View.GONE);
             viewHolder.itemPrincipal.setVisibility(View.VISIBLE);
 
+            /*
+            viewHolder.itemScrollJeanPierre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    context.startActivity( new Intent(context, ProfilePublicActivity.class));
+                }
+            }); */
+
             if ((listAliment.size() -1) > 0){
                 viewHolder.progressbarContainer.setVisibility(View.VISIBLE);
                 int progress = getprogression();
@@ -109,25 +130,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             }else{ viewHolder.progressbarContainer.setVisibility(View.GONE);}
 
             itemprincipal = viewHolder;
-
-            //  Handler handler = new Handler();
-            // int delay = 5000; //five sec
-           /* handler.postDelayed(new Runnable(){
-                public void run(){
-                    //do process here
-                    handler.postDelayed(this, delay); // recall
-
-                    if (index < listimages.size())
-                    {
-                        viewHolder.imgvwDiaporama.setImageDrawable(context.getDrawable(listimages.get(index)));
-                        index++;
-                    }else{
-                        index = 0;
-                        viewHolder.imgvwDiaporama.setImageDrawable(context.getDrawable(listimages.get(index)));
-                    }
-
-                }
-            }, delay); */
         }
         else {
             viewHolder.itemView.setClickable(true);
@@ -192,6 +194,8 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 }
             });
         }
+
+
     }
 
     @Override
