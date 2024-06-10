@@ -107,6 +107,7 @@ public class DialogService{
         dialog.findViewById(R.id.btn_ajtAutoAliment_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                listAlimentsAuto.clear();
                 dialog.dismiss();
             }
         });
