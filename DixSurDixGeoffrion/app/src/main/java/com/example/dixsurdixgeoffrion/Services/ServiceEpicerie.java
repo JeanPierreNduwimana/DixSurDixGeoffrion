@@ -35,7 +35,6 @@ public class ServiceEpicerie {
     private StorageReference rootStorage;
     private MainListeDepicerie context;
     public DialogService dialogService;
-    public Handler handler;
 
 
     public ServiceEpicerie(MainListeDepicerie current_context){
@@ -103,7 +102,7 @@ public class ServiceEpicerie {
         });
     }
     public void AjouterAliment(Aliment aliment, Uri imageUri){
-
+        dialogService.showDialogLoadingWaiting();
         //Création de la clé qui sera la même pour l'image et l'aliment
         String key = _rootDataref.push().getKey();
 
@@ -116,8 +115,6 @@ public class ServiceEpicerie {
                     public void onSuccess(Uri uri) {
 
                         //Création de l'aliment après le succes et la reception de l'image
-                        Toast.makeText(context,"Image Storage added successfully!", Toast.LENGTH_LONG).show();
-
                         //Association de la clé et de l'image à l'aliment
                         aliment.alimentKey = key;
                         aliment.imageUri = uri.toString();
@@ -126,9 +123,9 @@ public class ServiceEpicerie {
                         _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
+                                dialogService.dialogLoadingWaiting.dismiss();
                                 //Chargement de la liste d'aliment pour avoir le nouvel aliment
                                 GetListAliment();
-                                Toast.makeText(context,"Data added successfully!", Toast.LENGTH_SHORT).show();
 
                             }
                         })
@@ -136,7 +133,7 @@ public class ServiceEpicerie {
                             .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context,"Failed adding data =(", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context,"Erreur d'ajout de l'aliment", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -145,7 +142,7 @@ public class ServiceEpicerie {
                     .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context,"download url failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"Erreur avec l'image ajoutée", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -157,26 +154,32 @@ public class ServiceEpicerie {
         }); //addonprogresslistener possible.
     }
     public void AjouterAlimentSansImage(Aliment aliment){
+        dialogService.showDialogLoadingWaiting();
         String key = _rootDataref.push().getKey();
         aliment.alimentKey = key;
         aliment.imageUri = "https://firebasestorage.googleapis.com/v0/b/projet-test-f9f8c.appspot.com/o/AlimentImages%2FGeoffrionStockImages%2Fgeoffrion_main_icon.png?alt=media&token=7f3bfefc-18c2-4f16-9b5c-ba82109c361d";
         _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment);
+        dialogService.dialogLoadingWaiting.dismiss();
         GetListAliment();
     }
     public void AjouterAutoAliment(){
+        dialogService.showDialogLoadingWaiting();
         for (Aliment aliment : alimentListAuto){
             String key = _rootDataref.push().getKey();
             aliment.alimentKey = key;
             _rootDataref.child("AlimentsEpicerie").child(key).setValue(aliment);
         }
         alimentListAuto.clear();
+        dialogService.dialogLoadingWaiting.dismiss();
         GetListAliment();
     }
     public void UpdateAliment(Aliment aliment){
+        dialogService.showDialogLoadingWaiting();
         _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).setValue(aliment);
+        dialogService.dialogLoadingWaiting.dismiss();
     }
     public void UpdateAliment(Aliment aliment, Uri imageUri){
-
+        dialogService.showDialogLoadingWaiting();
         final String Path =  "AlimentsManuels/" + aliment.alimentKey + ".jpg";
         rootStorage.child(Path).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -189,6 +192,7 @@ public class ServiceEpicerie {
                             public void onSuccess(Uri uri) {
                                 aliment.imageUri = uri.toString();
                                 UpdateAliment(aliment);
+                                dialogService.dialogLoadingWaiting.dismiss();
                                 GetListAliment();
                             }
                         });
@@ -204,9 +208,12 @@ public class ServiceEpicerie {
 
     }
     public void UpdateUsedAutoAliment(AlimentAuto alimentAuto){
+        dialogService.showDialogLoadingWaiting();
         _rootDataref.child("Aliments Automatiques").child(alimentAuto.alimentKey).setValue(alimentAuto);
+        dialogService.dialogLoadingWaiting.dismiss();
     }
     public void SupprimerAliment(Aliment aliment){
+        dialogService.showDialogLoadingWaiting();
         _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -227,13 +234,9 @@ public class ServiceEpicerie {
                             }
                             if (alimentAuto != null){
                                 _rootDataref.child("Aliments Automatiques/" + alimentAuto.alimentKey).setValue(alimentAuto);
+                                dialogService.dialogLoadingWaiting.dismiss();
                                 GetListAliment();
                             }
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
 
                         }
                     });
@@ -242,19 +245,15 @@ public class ServiceEpicerie {
                         @Override
                         public void onSuccess(Void unused) {
                             //do something
+                            dialogService.dialogLoadingWaiting.dismiss();
                             GetListAliment();
-                            Toast.makeText(context,"Image effacée",Toast.LENGTH_LONG).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             //S'il n'y a pas d'images
+                            dialogService.dialogLoadingWaiting.dismiss();
                             GetListAliment();
-                        }
-                    }).addOnCanceledListener(new OnCanceledListener() {
-                        @Override
-                        public void onCanceled() {
-                            Toast.makeText(context,"haha",Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -264,6 +263,7 @@ public class ServiceEpicerie {
     }
     public void SupprimerToutLesAliments(List<Aliment> aliments){
 
+        dialogService.showDialogLoadingWaiting();
         _rootDataref.child("Aliments Automatiques").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot snapshot) {
@@ -271,13 +271,11 @@ public class ServiceEpicerie {
                 if (aliments.size() > 0){
                     aliments.remove(0);
                 }
-
                 Iterable<DataSnapshot> list = snapshot.getChildren();
                 List<AlimentAuto> alimentAutos = new ArrayList<>();
                 for (DataSnapshot s : list){
                     alimentAutos.add(s.getValue(AlimentAuto.class));
                 }
-
                 for(Aliment aliment : aliments){
                     _rootDataref.child("AlimentsEpicerie").child(aliment.alimentKey).removeValue();
                     if (aliment.alimentauto){
@@ -293,13 +291,8 @@ public class ServiceEpicerie {
                         rootStorage.child("AlimentsManuels").child(aliment.alimentKey + ".jpg").delete();
                     }
                 }
-
+                dialogService.dialogLoadingWaiting.dismiss();
                 GetListAliment();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
             }
         });
         
