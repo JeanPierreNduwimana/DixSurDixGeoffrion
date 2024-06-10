@@ -159,7 +159,8 @@
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
                             android:text="Arbi"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textColor="@color/black"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="100dp"
@@ -191,6 +192,7 @@
                             android:autoSizeMaxTextSize="16dp"
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
+                            android:textColor="@color/black"
                             android:text="Jean Pierre"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -225,6 +227,7 @@
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
                             android:text="Henry"
+                            android:textColor="@color/black"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -260,6 +263,7 @@
                             android:autoSizeTextType="uniform"
                             android:maxLines="1"
                             android:text="Tout le monde"
+                            android:textColor="@color/black"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -293,6 +297,7 @@
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
                             android:text="Maman"
+                            android:textColor="@color/black"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -326,6 +331,7 @@
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
                             android:text="Nana"
+                            android:textColor="@color/black"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -359,6 +365,7 @@
                             android:autoSizeMinTextSize="12dp"
                             android:maxLines="1"
                             android:text="Arnaud"
+                            android:textColor="@color/black"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
