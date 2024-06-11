@@ -67,7 +67,7 @@
             android:textColorHint="@color/gray"
             android:textColor="@color/black"
             android:backgroundTint="@color/gray"
-            android:maxLength="16"
+            android:maxLength="32"
             android:maxLines="1"
             android:lines="1"
             android:singleLine="true"
@@ -125,7 +125,7 @@
                 android:id="@+id/btn_ajtAliment_diminuer"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:drawableLeft="@drawable/add_circle_outline_24" />
+                android:drawableLeft="@drawable/remove_circle_outline_24" />
 
 
             <TextView

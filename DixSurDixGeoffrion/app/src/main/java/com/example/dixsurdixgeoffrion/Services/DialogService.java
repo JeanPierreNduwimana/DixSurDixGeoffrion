@@ -62,6 +62,9 @@ public class DialogService{
         dialog.setContentView(R.layout.ajout_auto_aliment);
 
         RecyclerView recyclerView = dialog.findViewById(R.id.recycle_ajout_auto_aliment);
+        ProgressBar progressBar = dialog.findViewById(R.id.progressAutoAliment);
+        TextView tv_msgListeVide = dialog.findViewById(R.id.txt_msg_list_autoaliment_vide);
+        progressBar.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(dialog.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -70,10 +73,8 @@ public class DialogService{
         ajoutAutoAdapter.context = dialog.getContext();
         ajoutAutoAdapter.dialogService = this;
         recyclerView.setVisibility(View.GONE);
-        ProgressBar progressBar = dialog.findViewById(R.id.progressAutoAliment);
-        progressBar.setVisibility(View.VISIBLE);
 
-        _serviceEpicerie.GetListAutoAliment(ajoutAutoAdapter,recyclerView, progressBar);
+        _serviceEpicerie.GetListAutoAliment(ajoutAutoAdapter,recyclerView, progressBar,tv_msgListeVide);
 
         dialog.findViewById(R.id.extfab_validate_auto_aliment).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +134,12 @@ public class DialogService{
         ImageView imgvwImageAliment = dialog.findViewById(R.id.image_aliment_ajout);
 
         if (aliment != null){
+
+            if (aliment.alimentauto){
+                edt_nomAliment.setEnabled(false);
+                imgvwImageAliment.setEnabled(false);
+            }
+
             btn_validate.setText("Modifier");
             btn_validate.setTextColor(context.getColor(R.color.yellow));
             edt_nomAliment.setText(aliment.nom);
@@ -198,17 +205,26 @@ public class DialogService{
                 }
 
                 if (aliment != null){
-                    aliment.nom = nomAliment;
-                    aliment.description = descripAliment;
-                    aliment.quantite = quantite;
-                    aliment.dateAjout = Date.from(Instant.now());
-                    //Si l'image a été modifier ou pas
-                    if (imageUri != null){
-                        _serviceEpicerie.UpdateAliment(aliment,imageUri);
-                    }else{
+
+                    if (aliment.alimentauto){
+                        aliment.description = descripAliment;
+                        aliment.quantite = quantite;
+                        aliment.dateAjout = Date.from(Instant.now());
                         _serviceEpicerie.UpdateAliment(aliment);
-                        _serviceEpicerie.GetListAliment();
+                    }else{
+                        aliment.nom = nomAliment;
+                        aliment.description = descripAliment;
+                        aliment.quantite = quantite;
+                        aliment.dateAjout = Date.from(Instant.now());
+                        //Si l'image a été modifier ou pas
+                        if (imageUri != null){
+                            _serviceEpicerie.UpdateAliment(aliment,imageUri);
+                        }else{
+                            _serviceEpicerie.UpdateAliment(aliment);
+                        }
                     }
+
+
                 }else{
                     if (imageUri == null){
                         Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,null, Date.from(Instant.now()),false);
@@ -325,75 +341,67 @@ public class DialogService{
             }
         });
 
+     if (aliment.validerAchat){
+                //on change les boutons dans le dialog détails
+                btn_dialog_details_validate.setVisibility(View.GONE);
+                btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
 
-        if (aliment.alimentauto){
-            imgbtn_dialog_details_edit.setVisibility(View.GONE);
-            imgbtn_dialog_details_edit.setClickable(false);
-        }
+                btn_dialog_details_annulerAchat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        InitDialogOuiOuNon("Annuler cette aliment? \n \n"  + aliment.nom, aliment.imageUri);
+                        btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //si on appui sur oui dans le dialog_dtlsAliment, l'achat est annulé,
+                                //on change les les bouton du dialog_dtlsAliment
+                                //btn_dialog_details_validate.setVisibility(View.GONE);
+                                //btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
+                                //on enleve le message sur son item et réaffiche le bouton
+                                imgbtnValiderAliment.setVisibility(View.VISIBLE);
+                                tvMessageAchete.setVisibility(View.GONE);
+                                //on met à jour les couleurs de l'item
+                                itemView.setBackground(context.getDrawable(R.drawable.shape_item_background_rcyclvw_aliment));
+                                itemView.setElevation(5);
+                                //on change l'etat achat
+                                aliment.validerAchat = false;
+                                _serviceEpicerie.UpdateAliment(aliment);
+                                dialogOuiOuNon.dismiss();
+                                dialog_dtlsAliment.dismiss();
+                            }
+                        });
 
-        if (aliment.validerAchat){
-            //on change les boutons dans le dialog détails
-            btn_dialog_details_validate.setVisibility(View.GONE);
-            btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
+                        dialogOuiOuNon.show();
 
-            btn_dialog_details_annulerAchat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    InitDialogOuiOuNon("Annuler cette aliment? \n \n"  + aliment.nom, aliment.imageUri);
-                    btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //si on appui sur oui dans le dialog_dtlsAliment, l'achat est annulé,
-                            //on change les les bouton du dialog_dtlsAliment
-                            //btn_dialog_details_validate.setVisibility(View.GONE);
-                            //btn_dialog_details_annulerAchat.setVisibility(View.VISIBLE);
-                            //on enleve le message sur son item et réaffiche le bouton
-                            imgbtnValiderAliment.setVisibility(View.VISIBLE);
-                            tvMessageAchete.setVisibility(View.GONE);
-                            //on met à jour les couleurs de l'item
-                            itemView.setBackground(context.getDrawable(R.drawable.shape_item_background_rcyclvw_aliment));
-                            itemView.setElevation(5);
-                            //on change l'etat achat
-                            aliment.validerAchat = false;
-                            _serviceEpicerie.UpdateAliment(aliment);
-                            dialogOuiOuNon.dismiss();
-                            dialog_dtlsAliment.dismiss();
-                            _serviceEpicerie.GetListAliment();
-                        }
-                    });
+                    }
+                });
+            }
+            else{
+                btn_dialog_details_validate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        InitDialogOuiOuNon("Valider l'achat de cette aliment? \n \n"  + aliment.nom, aliment.imageUri);
+                        btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //on enleve le bouton de l'item et on affiche le message
+                                imgbtnValiderAliment.setVisibility(View.GONE);
+                                tvMessageAchete.setVisibility(View.VISIBLE);
+                                itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
+                                itemView.setElevation(0);
+                                aliment.validerAchat = true;
+                                _serviceEpicerie.UpdateAliment(aliment);
+                                epicerieAdapter.updateProgression();
+                                dialogOuiOuNon.dismiss();
+                                dialog_dtlsAliment.dismiss();
+                            }
+                        });
 
-                    dialogOuiOuNon.show();
+                        dialogOuiOuNon.show();
 
-                }
-            });
-        }
-        else{
-            btn_dialog_details_validate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    InitDialogOuiOuNon("Valider l'achat de cette aliment? \n \n"  + aliment.nom, aliment.imageUri);
-                    btn_Rep_Oui_dialog_OuiNon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //on enleve le bouton de l'item et on affiche le message
-                            imgbtnValiderAliment.setVisibility(View.GONE);
-                            tvMessageAchete.setVisibility(View.VISIBLE);
-                            itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
-                            itemView.setElevation(0);
-                            aliment.validerAchat = true;
-                            _serviceEpicerie.UpdateAliment(aliment);
-                            epicerieAdapter.updateProgression();
-                            dialogOuiOuNon.dismiss();
-                            dialog_dtlsAliment.dismiss();
-                            _serviceEpicerie.GetListAliment();
-                        }
-                    });
-
-                    dialogOuiOuNon.show();
-
-                }
-            });
-        }
+                    }
+                });
+            }
 
         dialog_dtlsAliment.show();
         dialog_dtlsAliment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

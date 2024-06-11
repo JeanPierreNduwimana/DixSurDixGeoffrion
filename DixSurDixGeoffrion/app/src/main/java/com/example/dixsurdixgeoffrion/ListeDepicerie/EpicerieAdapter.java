@@ -3,6 +3,7 @@ package com.example.dixsurdixgeoffrion.ListeDepicerie;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.Gravity;
@@ -51,6 +52,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         public ProgressBar progressBar;
         public LinearLayout progressbarContainer;
         public LinearLayout quantityContainer;
+        public TextView tvTitreQteAliment;
 
         //region scrollview
 
@@ -73,6 +75,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             tvProgressPourcentage = v.findViewById(R.id.progress_pourcentage);
             progressbarContainer = v.findViewById(R.id.progressbar_container);
             quantityContainer = v.findViewById(R.id.quantite_container);
+            tvTitreQteAliment = v.findViewById(R.id.tv_titre_qte_aliment);
 
             //region scrollview
 
@@ -135,7 +138,12 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             viewHolder.itemView.setClickable(true);
             viewHolder.itemPrincipal.setVisibility(View.GONE);
             viewHolder.itemAliment.setVisibility(View.VISIBLE);
-            viewHolder.tvNomAliment.setText(alimentcourant.nom);
+            if (alimentcourant.nom.length() > 16){
+                String split = alimentcourant.nom.substring(0,15) + "...";
+                viewHolder.tvNomAliment.setText(split);
+            }else{
+                viewHolder.tvNomAliment.setText(alimentcourant.nom);
+            }
 
             if (alimentcourant.quantite > 0){
                 viewHolder.tvQteAliment.setText(""+alimentcourant.quantite);
@@ -147,7 +155,17 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                 viewHolder.imgbtnValiderAliment.setVisibility(View.GONE);
                 viewHolder.tvMessageAchete.setVisibility(View.VISIBLE);
                 viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_stroke_item_background));
+
+                int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+                    viewHolder.tvNomAliment.setTextColor(context.getColor(R.color.white));
+                    viewHolder.tvQteAliment.setTextColor(context.getColor(R.color.white));
+                    viewHolder.tvTitreQteAliment.setTextColor(context.getColor(R.color.white));
+                }
             }else{
+                viewHolder.tvNomAliment.setTextColor(context.getColor(R.color.black));
+                viewHolder.tvQteAliment.setTextColor(context.getColor(R.color.black));
+                viewHolder.tvTitreQteAliment.setTextColor(context.getColor(R.color.black));
                 viewHolder.imgbtnValiderAliment.setVisibility(View.VISIBLE);
                 viewHolder.tvMessageAchete.setVisibility(View.GONE);
                 viewHolder.itemView.setBackground(context.getDrawable(R.drawable.shape_item_background_rcyclvw_aliment));
@@ -169,7 +187,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
                             _serviceEpicerie.UpdateAliment(alimentcourant);
                             updateProgression();
                             dialogService.dialogOuiOuNon.dismiss();
-                            _serviceEpicerie.GetListAliment();
                         }
                     });
                     dialogService.dialogOuiOuNon.show();

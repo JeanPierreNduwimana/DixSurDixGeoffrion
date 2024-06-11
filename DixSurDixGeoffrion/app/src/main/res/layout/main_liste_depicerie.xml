@@ -127,28 +127,44 @@
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content"
                            android:orientation="horizontal"
-                           android:gravity="center">
-                           <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                               android:id="@+id/btn_EffacerListe"
-                               android:layout_width="0dp"
-                               android:layout_weight="1"
+                           android:gravity="center|end">
+                           <LinearLayout
+                               android:id="@+id/principal_fab_container"
+                               android:layout_width="wrap_content"
                                android:layout_height="wrap_content"
-                               android:textAlignment="center"
-                               android:layout_marginRight="15dp"
-                               android:text="Effacer"
-                               android:textColor="@color/white"
-                               android:backgroundTint="@color/red"
-                               android:textAllCaps="false"
-                               android:visibility="invisible"/>
+                               android:gravity="center">
+                               <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                                   android:id="@+id/btn_EffacerListe"
+                                   android:layout_width="0dp"
+                                   android:layout_weight="1"
+                                   android:layout_height="wrap_content"
+                                   android:textAlignment="center"
+                                   android:layout_marginRight="15dp"
+                                   android:text="Effacer"
+                                   android:textColor="@color/white"
+                                   android:backgroundTint="@color/red"
+                                   android:textAllCaps="false"
+                                   android:visibility="invisible"/>
 
-                           <com.google.android.material.floatingactionbutton.FloatingActionButton
-                               android:id="@+id/fab_add"
-                               android:layout_width="0dp"
-                               android:layout_weight="1"
-                               android:layout_height="wrap_content"
-                               android:src="@drawable/add_cart"
-                               android:layout_margin="14dp"
-                               />
+                               <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                   android:id="@+id/fab_add"
+                                   android:layout_width="0dp"
+                                   android:layout_weight="1"
+                                   android:layout_height="wrap_content"
+                                   android:src="@drawable/add_cart"
+                                   android:layout_margin="14dp"
+                                   />
+                           </LinearLayout>
+
+
+                           <com.google.android.material.imageview.ShapeableImageView
+                               android:id="@+id/afficheFab"
+                               android:layout_width="48dp"
+                               android:layout_height="48dp"
+                               android:src="@drawable/forward_arrow_24"
+                               android:background="@color/white"
+                               android:scaleType="centerInside"
+                               app:shapeAppearanceOverlay="@style/Circular"/>
 
                        </LinearLayout>
 

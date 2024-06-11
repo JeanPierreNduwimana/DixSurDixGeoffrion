@@ -1,6 +1,7 @@
 package com.example.dixsurdixgeoffrion.ListeDepicerie;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +35,7 @@ public class MainListeDepicerie extends AppCompatActivity {
     MainListeDepicerieBinding binding;
     EpicerieAdapter epicerieAdapter;
     Boolean isExpanded = false;
+    Boolean isHidden = false;
     DialogService dialogService;
     ServiceEpicerie _serviceEpicerie;
     ImageView imageView;
@@ -141,6 +143,40 @@ public class MainListeDepicerie extends AppCompatActivity {
 
             }
         });
+
+        binding.afficheFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isHidden){
+                    binding.principalFabContainer.startAnimation(slideFromRightFabAnim());
+                    binding.principalFabContainer.setVisibility(View.VISIBLE);
+                    binding.btnEffacerListe.setClickable(true);
+                    binding.fabAdd.setClickable(true);
+                    /*int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                    if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+                        binding.afficheFab.setImageDrawable(getDrawable(R.drawable.back_arrow_24_white));
+                    }else{
+                        binding.afficheFab.setImageDrawable(getDrawable(R.drawable.back_arrow_24));
+                    } */
+
+                    binding.afficheFab.setImageDrawable(getDrawable(R.drawable.forward_arrow_24));
+                    isHidden = !isHidden;
+                }else {
+                    binding.principalFabContainer.startAnimation(slideOutRightFabAnim());
+                    binding.principalFabContainer.setVisibility(View.INVISIBLE);
+                    binding.btnEffacerListe.setClickable(false);
+                    binding.fabAdd.setClickable(false);
+                    /*int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                    if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+                        binding.afficheFab.setImageDrawable(getDrawable(R.drawable.forward_arrow_24_white));
+                    }else{
+                        binding.afficheFab.setImageDrawable(getDrawable(R.drawable.forward_arrow_24));
+                    } */
+                    binding.afficheFab.setImageDrawable(getDrawable(R.drawable.back_arrow_24));
+                    isHidden = !isHidden;
+                }
+            }
+        });
         //endregion
 
         initRecycler();
@@ -238,6 +274,13 @@ public class MainListeDepicerie extends AppCompatActivity {
     }
     private Animation rotateAntiClockWiseFabAnim (){
         return AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise);
+    }
+
+    private Animation slideFromRightFabAnim(){
+        return AnimationUtils.loadAnimation(this,R.anim.slide_in_from_right);
+    }
+    private Animation slideOutRightFabAnim(){
+        return AnimationUtils.loadAnimation(this,R.anim.slide_out_right);
     }
 
     //endregion

@@ -3,6 +3,7 @@ import android.net.Uri;
 import android.view.View;
 import android.os.Handler;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,7 +39,8 @@ public class ServiceEpicerie {
 
 
     public ServiceEpicerie(MainListeDepicerie current_context){
-        _rootDataref = FirebaseDatabase.getInstance().getReference().child("1010GeoffrionApp");
+        //_rootDataref = FirebaseDatabase.getInstance().getReference().child("1010GeoffrionApp"); //Public
+        _rootDataref = FirebaseDatabase.getInstance().getReference().child("1010GeoffrionApp_test"); //Test
         rootStorage = FirebaseStorage.getInstance().getReference().child("AlimentImages");
         context = current_context;
     }
@@ -73,7 +75,7 @@ public class ServiceEpicerie {
             }
         });
     }
-    public void GetListAutoAliment(AjoutAutoAdapter ajoutAutoAdapter, RecyclerView recyclerView, ProgressBar progressBar) {
+    public void GetListAutoAliment(AjoutAutoAdapter ajoutAutoAdapter, RecyclerView recyclerView, ProgressBar progressBar, TextView msg_ListeVide) {
         _rootDataref.child("Aliments Automatiques").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -85,12 +87,21 @@ public class ServiceEpicerie {
                             ajoutAutoAdapter.listAliment.add(alimentAuto);
                         }
                     }
-                    ajoutAutoAdapter.notifyDataSetChanged();
-                    recyclerView.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
+
+                    if (ajoutAutoAdapter.listAliment.size() == 0){
+                        recyclerView.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
+                        msg_ListeVide.setVisibility(View.VISIBLE);
+                    }else{
+                        ajoutAutoAdapter.notifyDataSetChanged();
+                        msg_ListeVide.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
                 }else{
-                    recyclerView.setVisibility(View.VISIBLE);
+                    msg_ListeVide.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     Toast.makeText(context,"Erreur d'affiche des aliments auto", Toast.LENGTH_LONG).show();
                 }
             }
@@ -177,6 +188,7 @@ public class ServiceEpicerie {
         dialogService.showDialogLoadingWaiting();
         _rootDataref.child("AlimentsEpicerie/"+ aliment.alimentKey).setValue(aliment);
         dialogService.dialogLoadingWaiting.dismiss();
+        GetListAliment();
     }
     public void UpdateAliment(Aliment aliment, Uri imageUri){
         dialogService.showDialogLoadingWaiting();
@@ -207,6 +219,8 @@ public class ServiceEpicerie {
         });
 
     }
+
+    //Mise à jour des aliments automatiques utilisés enfin de ne plus les afficher dans le dialog d'ajout auto aliment.
     public void UpdateUsedAutoAliment(AlimentAuto alimentAuto){
         dialogService.showDialogLoadingWaiting();
         _rootDataref.child("Aliments Automatiques").child(alimentAuto.alimentKey).setValue(alimentAuto);
