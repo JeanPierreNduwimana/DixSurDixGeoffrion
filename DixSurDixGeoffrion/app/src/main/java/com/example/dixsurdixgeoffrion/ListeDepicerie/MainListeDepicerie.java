@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.dixsurdixgeoffrion.EspaceFamille.AccueilEspaceFamille;
@@ -24,6 +25,7 @@ import com.example.dixsurdixgeoffrion.Profile.MainProfileActivity;
 import com.example.dixsurdixgeoffrion.R;
 import com.example.dixsurdixgeoffrion.Services.DialogService;
 import com.example.dixsurdixgeoffrion.Services.ServiceEpicerie;
+import com.example.dixsurdixgeoffrion.bd.BD;
 import com.example.dixsurdixgeoffrion.databinding.MainListeDepicerieBinding;
 
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ public class MainListeDepicerie extends AppCompatActivity {
     DialogService dialogService;
     ServiceEpicerie _serviceEpicerie;
     ImageView imageView;
+
+    private BD maBD;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -61,6 +65,11 @@ public class MainListeDepicerie extends AppCompatActivity {
         _serviceEpicerie = new ServiceEpicerie(MainListeDepicerie.this);
         dialogService = new DialogService(MainListeDepicerie.this,_serviceEpicerie);
         _serviceEpicerie.dialogService = dialogService;
+
+        this.maBD =  Room.databaseBuilder(getApplicationContext(), BD.class, "BDLocalAliment")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
 
         //region BINDINGS
 
@@ -99,7 +108,8 @@ public class MainListeDepicerie extends AppCompatActivity {
         binding.fabAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogService.showDialogAjoutAutoAliment();
+                //dialogService.showDialogAjoutAutoAliment();
+                ListLocalAliments();
                 shrinkFab();
             }
         });
@@ -198,7 +208,9 @@ public class MainListeDepicerie extends AppCompatActivity {
 
         epicerieAdapter.listAliment.clear();
         epicerieAdapter.listAliment.add(null);
-        listaliment.sort(Comparator.comparing(Aliment::getDateAjout)); //liste d'aliments en ordre par date
+        if (listaliment.get(0).dateAjout !=null){
+            listaliment.sort(Comparator.comparing(Aliment::getDateAjout)); //liste d'aliments en ordre par date
+        }
         epicerieAdapter.listAliment.addAll(listaliment); //Ajout au recycleview
         _serviceEpicerie.alimentList.clear();
         epicerieAdapter.notifyDataSetChanged();
@@ -225,7 +237,20 @@ public class MainListeDepicerie extends AppCompatActivity {
         _serviceEpicerie.GetListAliment();
     }
 
+    public void remplirBD(List<Aliment> listaliment){
 
+        maBD.monDao().SupprimerLesAliments();
+
+        for (Aliment aliment :
+                listaliment) {
+            aliment.alimentId = maBD.monDao().AjoutAliment(aliment);
+        }
+    }
+
+    public void ListLocalAliments(){
+
+        remplirRecycler(maBD.monDao().touslesaliments());
+    }
     //region ANIMATIONS & FLOAT ACTION BUTTON
 
     public void shrinkFab() {

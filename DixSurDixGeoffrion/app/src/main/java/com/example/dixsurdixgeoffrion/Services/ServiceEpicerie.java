@@ -59,6 +59,7 @@ public class ServiceEpicerie {
                     }
                 }
                 //dialogService.dismissDialogLoadingWaiting();
+                context.remplirBD(alimentList);
                 context.remplirRecycler(alimentList);
             }
         }).addOnFailureListener(new OnFailureListener() {

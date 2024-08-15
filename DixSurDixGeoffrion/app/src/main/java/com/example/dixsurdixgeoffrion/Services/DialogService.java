@@ -307,7 +307,12 @@ public class DialogService{
         tv_nomAliment.setText(aliment.nom);
         String pattern = "EEEE dd MMMM yyyy HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, new Locale("fr", "FR"));
-        tv_dateAjoutAliment.setText(dateFormat.format(aliment.dateAjout).toString());
+        if (aliment.dateAjout != null){
+            tv_dateAjoutAliment.setText(dateFormat.format(aliment.dateAjout).toString());
+        }else {
+            tv_dateAjoutAliment.setText("hors ligne");
+        }
+
         Picasso.get().load(aliment.imageUri).into(imgvwDetailsAliment);
 
         btn_dialog_details_cancel.setOnClickListener(new View.OnClickListener() {
@@ -418,6 +423,16 @@ public class DialogService{
         dialogLoadingWaiting.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialogLoadingWaiting.getWindow().setGravity(Gravity.CENTER);
         dialogLoadingWaiting.setCanceledOnTouchOutside(false);
+
+        Button btn_horsligne = dialogLoadingWaiting.findViewById(R.id.modehorsligne);
+
+        btn_horsligne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogLoadingWaiting.dismiss();
+                context.ListLocalAliments();
+            }
+        });
         dialogLoadingWaiting.show();
     }
 
