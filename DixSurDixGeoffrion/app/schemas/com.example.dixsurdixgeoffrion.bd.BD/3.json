@@ -1,0 +1,138 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "b16e8faa698ca3d3244fda1885e96934",
+    "entities": [
+      {
+        "tableName": "Aliment",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alimentId` INTEGER PRIMARY KEY AUTOINCREMENT, `alimentKey` TEXT, `nom` TEXT, `description` TEXT, `quantite` INTEGER NOT NULL, `validerAchat` INTEGER, `imageUri` TEXT, `alimentauto` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "alimentId",
+            "columnName": "alimentId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "alimentKey",
+            "columnName": "alimentKey",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nom",
+            "columnName": "nom",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quantite",
+            "columnName": "quantite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "validerAchat",
+            "columnName": "validerAchat",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imageUri",
+            "columnName": "imageUri",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "alimentauto",
+            "columnName": "alimentauto",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "alimentId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "AlimentAuto",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alimentAutoId` INTEGER PRIMARY KEY AUTOINCREMENT, `alimentKey` TEXT, `nom` TEXT, `description` TEXT, `quantite` INTEGER NOT NULL, `validerAchat` INTEGER, `imageUri` TEXT, `used` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "alimentAutoId",
+            "columnName": "alimentAutoId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "alimentKey",
+            "columnName": "alimentKey",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nom",
+            "columnName": "nom",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quantite",
+            "columnName": "quantite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "validerAchat",
+            "columnName": "validerAchat",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imageUri",
+            "columnName": "imageUri",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "used",
+            "columnName": "used",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "alimentAutoId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b16e8faa698ca3d3244fda1885e96934')"
+    ]
+  }
+}

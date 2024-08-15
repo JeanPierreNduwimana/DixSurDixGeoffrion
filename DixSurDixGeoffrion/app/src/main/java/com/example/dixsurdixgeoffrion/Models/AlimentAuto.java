@@ -1,9 +1,15 @@
 package com.example.dixsurdixgeoffrion.Models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Date;
 
+@Entity
 public class AlimentAuto {
 
+    @PrimaryKey(autoGenerate = true)
+    public Long alimentAutoId;
     public String alimentKey;
     public String nom;
     public String description;

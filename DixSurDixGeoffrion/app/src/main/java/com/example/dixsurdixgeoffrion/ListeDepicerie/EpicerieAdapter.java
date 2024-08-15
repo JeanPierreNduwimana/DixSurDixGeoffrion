@@ -55,7 +55,6 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
         public TextView tvTitreQteAliment;
 
         //region scrollview
-
         public LinearLayout itemScrollJeanPierre;
 
         //endregion
@@ -78,9 +77,7 @@ public class EpicerieAdapter extends RecyclerView.Adapter<EpicerieAdapter.MyView
             tvTitreQteAliment = v.findViewById(R.id.tv_titre_qte_aliment);
 
             //region scrollview
-
             itemScrollJeanPierre = v.findViewById(R.id.item_scrollview_jeanpierre);
-
             //endregion
 
         }

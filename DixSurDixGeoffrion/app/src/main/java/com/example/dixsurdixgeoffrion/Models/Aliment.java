@@ -1,16 +1,26 @@
 package com.example.dixsurdixgeoffrion.Models;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 
+@Entity
 public class Aliment {
 
+    @PrimaryKey(autoGenerate = true)
+    public Long alimentId;
     public String alimentKey;
     public String nom;
     public String description;
     public int quantite;
     public Boolean validerAchat;
     public String imageUri;
+    @Ignore
     public Date dateAjout;
     public Boolean alimentauto;
 
