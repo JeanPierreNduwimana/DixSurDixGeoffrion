@@ -162,6 +162,11 @@ public class MainListeDepicerie extends AppCompatActivity {
                     binding.afficheFab.setImageDrawable(getDrawable(R.drawable.forward_arrow_24));
                     isHidden = !isHidden;
                 }else {
+
+                    if (isExpanded){
+                        shrinkFab();
+                    }
+
                     binding.principalFabContainer.startAnimation(slideOutRightFabAnim());
                     binding.principalFabContainer.setVisibility(View.INVISIBLE);
                     binding.btnEffacerListe.setClickable(false);
@@ -224,7 +229,6 @@ public class MainListeDepicerie extends AppCompatActivity {
         //Appel du service
         _serviceEpicerie.GetListAliment();
     }
-
 
     //region ANIMATIONS & FLOAT ACTION BUTTON
 

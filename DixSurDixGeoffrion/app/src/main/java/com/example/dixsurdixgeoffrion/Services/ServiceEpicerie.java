@@ -40,7 +40,7 @@ public class ServiceEpicerie {
 
     public ServiceEpicerie(MainListeDepicerie current_context){
         //_rootDataref = FirebaseDatabase.getInstance().getReference().child("1010GeoffrionApp"); //Public
-        _rootDataref = FirebaseDatabase.getInstance().getReference().child("1010GeoffrionApp"); //Test
+        _rootDataref = FirebaseDatabase.getInstance().getReference().child("1010GeoffrionApp_test"); //Test
         rootStorage = FirebaseStorage.getInstance().getReference().child("AlimentImages");
         context = current_context;
     }
