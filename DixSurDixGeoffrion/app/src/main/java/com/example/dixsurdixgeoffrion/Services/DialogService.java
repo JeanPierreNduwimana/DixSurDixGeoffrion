@@ -204,7 +204,7 @@ public class DialogService{
                     return;
                 }
 
-                if (aliment != null){
+                if (aliment != null){ //Si c'est un aliment existant qu'on veut modifier
 
                     if (aliment.alimentauto){
                         aliment.description = descripAliment;
@@ -224,20 +224,18 @@ public class DialogService{
                         }
                     }
 
-
-                }else{
+                }else{ //Si c'est un aliment inexistant qu'on veut créer
                     if (imageUri == null){
                         Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,null, Date.from(Instant.now()),false);
                         //Execution de la méthode du service
                         _serviceEpicerie.AjouterAlimentSansImage(nouvelAliment);
-
                     }else{
                         Aliment nouvelAliment = new Aliment(nomAliment,descripAliment,quantite,false,imageUri.toString(), Date.from(Instant.now()),false);
                         //Execution de la méthode du service
                         _serviceEpicerie.AjouterAliment(nouvelAliment,imageUri);
                     }
                 }
-
+                imageUri = null; //Remise à null pour ne pas affecter l'image du prochain item (s'il n'a pas de photo)
                 dialog.dismiss();
             }
         });

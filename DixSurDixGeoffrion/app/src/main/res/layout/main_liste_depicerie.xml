@@ -144,6 +144,10 @@
                                    android:textColor="@color/white"
                                    android:backgroundTint="@color/red"
                                    android:textAllCaps="false"
+                                   android:autoSizeMinTextSize="8dp"
+                                   android:autoSizeTextType="uniform"
+                                   android:maxLines="1"
+                                   android:textSize="16dp"
                                    android:visibility="invisible"/>
 
                                <com.google.android.material.floatingactionbutton.FloatingActionButton
