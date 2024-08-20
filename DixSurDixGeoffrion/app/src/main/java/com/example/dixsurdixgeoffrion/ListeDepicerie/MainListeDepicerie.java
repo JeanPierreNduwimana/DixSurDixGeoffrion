@@ -108,8 +108,7 @@ public class MainListeDepicerie extends AppCompatActivity {
         binding.fabAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //dialogService.showDialogAjoutAutoAliment();
-                ListLocalAliments();
+                dialogService.showDialogAjoutAutoAliment();
                 shrinkFab();
             }
         });
@@ -208,8 +207,10 @@ public class MainListeDepicerie extends AppCompatActivity {
 
         epicerieAdapter.listAliment.clear();
         epicerieAdapter.listAliment.add(null);
-        if (listaliment.get(0).dateAjout !=null){
-            listaliment.sort(Comparator.comparing(Aliment::getDateAjout)); //liste d'aliments en ordre par date
+        if (listaliment.size() > 0){
+            if (listaliment.get(0).dateAjout !=null){
+                listaliment.sort(Comparator.comparing(Aliment::getDateAjout)); //liste d'aliments en ordre par date
+            }
         }
         epicerieAdapter.listAliment.addAll(listaliment); //Ajout au recycleview
         _serviceEpicerie.alimentList.clear();
